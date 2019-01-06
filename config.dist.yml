@@ -1,0 +1,42 @@
+---
+# Server configuration:
+server:
+
+  # Server listener:
+  listenAddress: ":8000"
+
+  # TLS settings:
+  # (Threema Safe requires TLS!)
+  tls:
+    enable: true
+    certFile: "serverWithFullChain.crt"
+    keyFile: "server.key"
+
+  # Backup settings:
+  backups:
+    # Maximum size of a backup in bytes:
+    maxBackupBytes: 524288
+    # Backup expiration in days:
+    retentionDays: 180
+
+  # User accounts for HTTP basic authentication:
+  # (There is no privilege separation between users. In other words: Every user has access to *all* backups!)
+  accounts:
+    jonathan: "byers"
+
+# Use the following storage backend (possible values: "filesystem", "dynamodb"):
+storageBackendType: "filesystem"
+
+# Storage backend configuration:
+storageBackends:
+
+  # Filesystem storage backend:
+  filesystem:
+    directory: "./threema-backups/"
+    permissions: 0600
+
+  # DynamoDB storage backend:
+  # (Requires a pre-configured AWS environment)
+  dynamodb:
+    # Table:
+    table: "eee-safe"
