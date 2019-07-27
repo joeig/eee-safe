@@ -1,4 +1,4 @@
-package common
+package storage
 
 import (
 	"github.com/joeig/eee-safe/threema"

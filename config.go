@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/storage/common"
+	"github.com/joeig/eee-safe/storage"
 	"github.com/joeig/eee-safe/storage/dynamodb"
 	"github.com/joeig/eee-safe/storage/filesystem"
 	"github.com/spf13/viper"
@@ -11,9 +11,9 @@ import (
 
 // Config contains the primary configuration structure of the application
 type Config struct {
-	Server             Server                    `mapstructure:"server"`
-	StorageBackendType common.StorageBackendType `mapstructure:"storageBackendType"`
-	StorageBackends    StorageBackends           `mapstructure:"storageBackends"`
+	Server             Server                     `mapstructure:"server"`
+	StorageBackendType storage.StorageBackendType `mapstructure:"storageBackendType"`
+	StorageBackends    StorageBackends            `mapstructure:"storageBackends"`
 }
 
 // Server defines the structure of the server configuration
@@ -57,14 +57,14 @@ func parseConfig(config *Config, configFile *string) {
 
 const (
 	// StorageBackendTypeFilesystem sets the storage backend type to "filesystem"
-	StorageBackendTypeFilesystem common.StorageBackendType = "filesystem"
+	StorageBackendTypeFilesystem storage.StorageBackendType = "filesystem"
 	// StorageBackendTypeDynamoDB sets the storage backend type to "filesystem"
-	StorageBackendTypeDynamoDB common.StorageBackendType = "dynamodb"
+	StorageBackendTypeDynamoDB storage.StorageBackendType = "dynamodb"
 )
 
-var storageBackend common.StorageBackend
+var storageBackend storage.StorageBackend
 
-func setStorageBackend(s *common.StorageBackend) {
+func setStorageBackend(s *storage.StorageBackend) {
 	switch config.StorageBackendType {
 	case StorageBackendTypeFilesystem:
 		*s = &config.StorageBackends.Filesystem

@@ -2,7 +2,7 @@ package filesystem
 
 import (
 	"github.com/joeig/eee-safe/debug"
-	"github.com/joeig/eee-safe/storage/common"
+	"github.com/joeig/eee-safe/storage"
 	"github.com/joeig/eee-safe/threema"
 	"io/ioutil"
 	"os"
@@ -35,14 +35,14 @@ func (f *Filesystem) GetBackup(backupID threema.BackupID) (*threema.BackupOutput
 	info, err := os.Stat(fileName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return &threema.BackupOutput{}, &common.BackupIDNotFoundError{BackupID: backupID}
+			return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
 		}
 		return &threema.BackupOutput{}, &FileNotReadableError{FileName: fileName, UpstreamError: err}
 	}
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return &threema.BackupOutput{}, &common.BackupIDNotFoundError{BackupID: backupID}
+			return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
 		}
 		return &threema.BackupOutput{}, &FileNotReadableError{FileName: fileName, UpstreamError: err}
 	}
@@ -63,7 +63,7 @@ func (f *Filesystem) DeleteBackup(backupID threema.BackupID) error {
 	}
 	if err := os.Remove(fileName); err != nil {
 		if os.IsNotExist(err) {
-			return &common.BackupIDNotFoundError{BackupID: backupID}
+			return &storage.BackupIDNotFoundError{BackupID: backupID}
 		}
 		return &FileNotRemovableError{FileName: fileName, UpstreamError: err}
 	}

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/storage/common"
+	"github.com/joeig/eee-safe/storage"
 	"github.com/joeig/eee-safe/threema"
 	"log"
 	"net/http"
@@ -20,7 +20,7 @@ func GetBackupHandler(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 		switch err.(type) {
-		case *common.BackupIDNotFoundError:
+		case *storage.BackupIDNotFoundError:
 			c.Data(http.StatusNotFound, "", []byte{})
 			break
 		default:

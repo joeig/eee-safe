@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/joeig/eee-safe/debug"
-	"github.com/joeig/eee-safe/storage/common"
+	"github.com/joeig/eee-safe/storage"
 	"github.com/joeig/eee-safe/threema"
 	"strconv"
 	"strings"
@@ -23,7 +23,7 @@ func (d *DynamoDB) PutBackup(backupInput *threema.BackupInput) error {
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
 	if err != nil {
-		return &common.StorageBackendError{APIError: err}
+		return &storage.StorageBackendError{APIError: err}
 	}
 	return nil
 }
@@ -38,14 +38,14 @@ func (d *DynamoDB) GetBackup(backupID threema.BackupID) (*threema.BackupOutput, 
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
 	if err != nil {
-		return &threema.BackupOutput{}, &common.StorageBackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.StorageBackendError{APIError: err}
 	}
 	var resultItem item
 	if err := dynamodbattribute.UnmarshalMap(result.Item, &resultItem); err != nil {
-		return &threema.BackupOutput{}, &common.StorageBackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.StorageBackendError{APIError: err}
 	}
 	if len(resultItem.EncryptedBackup) == 0 {
-		return &threema.BackupOutput{}, &common.BackupIDNotFoundError{BackupID: backupID}
+		return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
 	}
 	return &threema.BackupOutput{
 		BackupID:        backupID,
@@ -65,14 +65,14 @@ func (d *DynamoDB) DeleteBackup(backupID threema.BackupID) error {
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
 	if err != nil {
-		return &common.StorageBackendError{APIError: err}
+		return &storage.StorageBackendError{APIError: err}
 	}
 	var resultItem item
 	if err := dynamodbattribute.UnmarshalMap(result.Attributes, &resultItem); err != nil {
-		return &common.StorageBackendError{APIError: err}
+		return &storage.StorageBackendError{APIError: err}
 	}
 	if len(resultItem.EncryptedBackup) == 0 {
-		return &common.BackupIDNotFoundError{BackupID: backupID}
+		return &storage.BackupIDNotFoundError{BackupID: backupID}
 	}
 	return nil
 }
