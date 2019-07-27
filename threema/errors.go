@@ -41,7 +41,7 @@ func (e *BackupIDStringLengthError) Error() string {
 	return fmt.Sprintf("Wrong backup ID string length (%d bytes instead of %d bytes)", len(e.BackupIDString), e.DesiredLength)
 }
 
-// BackupIDStringInvalidError is being used whenever an encrypted backup is invalid
+// EncryptedBackupInvalidError is being used whenever an encrypted backup is invalid
 type EncryptedBackupInvalidError struct {
 	EncryptedBackup EncryptedBackup
 }
