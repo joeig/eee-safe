@@ -32,7 +32,7 @@ func TestDeleteBackupHandler(t *testing.T) {
 	t.Run("TestDeleteValidBackup", func(t *testing.T) {
 		backupID, _ := threema.ConvertToBackupID("87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d")
 		backupInput := &threema.BackupInput{BackupID: backupID, EncryptedBackup: threema.EncryptedBackup("Foo")}
-		storageBackend.PutBackup(backupInput)
+		_ = storageBackend.PutBackup(backupInput)
 		assertDeleteBackupHandlerComponent(t, router, "87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d", http.StatusOK)
 	})
 

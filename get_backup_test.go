@@ -21,7 +21,7 @@ func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 	if res.Code != assertedCode {
 		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
 	}
-	if bytes.Compare(res.Body.Bytes(), assertedEncryptedBackup) != 0 {
+	if !bytes.Equal(res.Body.Bytes(), assertedEncryptedBackup) {
 		t.Errorf("HTTP response payload does not match")
 	}
 	return res
@@ -41,7 +41,7 @@ func TestGetBackupHandler(t *testing.T) {
 		EncryptedBackup: threema.EncryptedBackup("Foo"),
 		RetentionDays:   config.Server.Backups.RetentionDays,
 	}
-	storageBackend.PutBackup(backupInput)
+	_ = storageBackend.PutBackup(backupInput)
 
 	// OK
 	t.Run("TestGetValidBackup", func(t *testing.T) {
@@ -62,5 +62,5 @@ func TestGetBackupHandler(t *testing.T) {
 	})
 
 	// Clean up
-	storageBackend.DeleteBackup(backupID)
+	_ = storageBackend.DeleteBackup(backupID)
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/joeig/eee-safe/threema"
 )
 
-// StorageBackend sets the storage backend type
+// StorageBackendType sets the storage backend type
 type StorageBackendType string
 
 // StorageBackend is an interface for basic storage operations

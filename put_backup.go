@@ -38,5 +38,4 @@ func PutBackupHandler(c *gin.Context) {
 		return
 	}
 	c.Data(http.StatusOK, "", []byte{})
-	return
 }

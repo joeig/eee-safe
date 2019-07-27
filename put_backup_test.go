@@ -55,5 +55,5 @@ func TestPutBackupHandler(t *testing.T) {
 
 	// Clean up
 	backupID, _ := threema.ConvertToBackupID("87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d")
-	storageBackend.DeleteBackup(backupID)
+	_ = storageBackend.DeleteBackup(backupID)
 }

@@ -21,12 +21,10 @@ func DeleteBackupHandler(c *gin.Context) {
 		switch err.(type) {
 		case *storage.BackupIDNotFoundError:
 			c.Data(http.StatusNotFound, "", []byte{})
-			break
 		default:
 			c.Data(http.StatusInternalServerError, "", []byte{})
 		}
 		return
 	}
 	c.Data(http.StatusOK, "", []byte{})
-	return
 }

@@ -16,5 +16,4 @@ func GetConfigHandler(c *gin.Context) {
 		MaxBackupBytes: config.Server.Backups.MaxBackupBytes,
 		RetentionDays:  config.Server.Backups.RetentionDays,
 	})
-	return
 }

@@ -22,7 +22,6 @@ func GetBackupHandler(c *gin.Context) {
 		switch err.(type) {
 		case *storage.BackupIDNotFoundError:
 			c.Data(http.StatusNotFound, "", []byte{})
-			break
 		default:
 			c.Data(http.StatusInternalServerError, "", []byte{})
 		}
@@ -35,5 +34,4 @@ func GetBackupHandler(c *gin.Context) {
 		c.Header("Expires", backup.ExpirationTime.Format(http.TimeFormat))
 	}
 	c.Data(http.StatusOK, "application/octet-stream", backup.EncryptedBackup)
-	return
 }

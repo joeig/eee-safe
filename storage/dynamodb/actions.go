@@ -87,8 +87,7 @@ type item struct {
 func (d *DynamoDB) generatePutItemInput(backup *threema.BackupInput) *dynamodb.PutItemInput {
 	creationTime := strconv.FormatInt(time.Now().Unix(), 10)
 	expirationTime := strconv.FormatInt(time.Now().AddDate(0, 0, int(backup.RetentionDays)).Unix(), 10)
-	var returnValues string
-	returnValues = "ALL_OLD"
+	returnValues := "ALL_OLD"
 	return &dynamodb.PutItemInput{
 		Item: map[string]*dynamodb.AttributeValue{
 			"backupID": {
@@ -110,8 +109,7 @@ func (d *DynamoDB) generatePutItemInput(backup *threema.BackupInput) *dynamodb.P
 }
 
 func (d *DynamoDB) generateGetItemInput(backupID threema.BackupID) *dynamodb.GetItemInput {
-	var projectionExpression string
-	projectionExpression = "encryptedBackup, creationTime, expirationTime"
+	projectionExpression := "encryptedBackup, creationTime, expirationTime"
 	return &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"backupID": {
@@ -124,8 +122,7 @@ func (d *DynamoDB) generateGetItemInput(backupID threema.BackupID) *dynamodb.Get
 }
 
 func (d *DynamoDB) generateDeleteItemInput(backupID threema.BackupID) *dynamodb.DeleteItemInput {
-	var returnValues string
-	returnValues = "ALL_OLD"
+	returnValues := "ALL_OLD"
 	return &dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"backupID": {

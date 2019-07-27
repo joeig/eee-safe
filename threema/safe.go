@@ -53,7 +53,7 @@ func (b *BackupID) String() string {
 	return hex.EncodeToString(backupID)
 }
 
-// ValidateEncryptedBackup validates the EncryptedBackup
+// Validate validates the EncryptedBackup
 func (t *EncryptedBackup) Validate(maxBackupBytes uint) error {
 	tLength := len(*t)
 	if tLength == 0 || uint(tLength) > maxBackupBytes {
