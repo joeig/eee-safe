@@ -7,7 +7,6 @@ import (
 	"github.com/joeig/eee-safe/threema"
 	"log"
 	"net/http"
-	"strings"
 )
 
 // Adds an unique request ID to every single Gin request
@@ -31,8 +30,8 @@ func requestIDMiddleware() gin.HandlerFunc {
 func validateUserAgentMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userAgent := c.GetHeader("User-Agent")
-		if !strings.Contains(userAgent, threema.ValidUserAgentSubstring) {
-			log.Printf("Invalid user agent header \"%s\"", userAgent)
+		if err := threema.ValidateUserAgent(userAgent); err != nil {
+			log.Println(err)
 			c.String(http.StatusBadRequest, "")
 			c.Abort()
 			return

@@ -53,3 +53,11 @@ type EncryptedBackupLengthError struct {
 func (e *EncryptedBackupLengthError) Error() string {
 	return fmt.Sprintf("Wrong encrypted backup string length (%d bytes is greater than %d bytes)", len(e.EncryptedBackup), e.MaxLength)
 }
+
+type InvalidUserAgentError struct {
+	UserAgent string
+}
+
+func (e *InvalidUserAgentError) Error() string {
+	return fmt.Sprintf("User agent invalid: %s", e.UserAgent)
+}
