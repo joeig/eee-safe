@@ -1,0 +1,15 @@
+[Unit]
+Description=eee-safe
+After=network.target
+
+[Service]
+Type=simple
+User=eee-safe
+Group=eee-safe
+WorkingDirectory=/opt/eee-safe/
+ExecStart=eee-safe -config=config.yml
+RestartSec=15
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
