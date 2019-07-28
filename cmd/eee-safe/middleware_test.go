@@ -7,7 +7,7 @@ import (
 )
 
 func TestRequestID(t *testing.T) {
-	configFile := "config.dist.yml"
+	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	router := getGinEngine()
 	res := httptest.NewRecorder()
@@ -21,7 +21,7 @@ func TestRequestID(t *testing.T) {
 }
 
 func TestUnauthorizedAccess(t *testing.T) {
-	configFile := "config.dist.yml"
+	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	router := getGinEngine()
 	res := httptest.NewRecorder()
@@ -35,7 +35,7 @@ func TestUnauthorizedAccess(t *testing.T) {
 }
 
 func TestInvalidUserAgent(t *testing.T) {
-	configFile := "config.dist.yml"
+	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	router := getGinEngine()
 	res := httptest.NewRecorder()

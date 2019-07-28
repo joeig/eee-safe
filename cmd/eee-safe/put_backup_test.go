@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/threema"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -26,7 +26,7 @@ func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 }
 
 func TestPutBackupHandler(t *testing.T) {
-	configFile := "config.dist.yml"
+	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	setStorageBackend(&storageBackend)
 	router := getGinEngine()

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/storage"
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/storage"
+	"github.com/joeig/eee-safe/pkg/threema"
 	"log"
 	"net/http"
 )

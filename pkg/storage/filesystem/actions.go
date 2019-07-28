@@ -1,9 +1,9 @@
 package filesystem
 
 import (
-	"github.com/joeig/eee-safe/debug"
-	"github.com/joeig/eee-safe/storage"
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/debug"
+	"github.com/joeig/eee-safe/pkg/storage"
+	"github.com/joeig/eee-safe/pkg/threema"
 	"io/ioutil"
 	"os"
 	"path"

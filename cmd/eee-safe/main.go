@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/debug"
+	"github.com/joeig/eee-safe/pkg/debug"
 	"log"
 	"os"
 )

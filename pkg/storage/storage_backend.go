@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/threema"
 )
 
 // StorageBackendType sets the storage backend type

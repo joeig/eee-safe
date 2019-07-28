@@ -26,11 +26,13 @@ go get -u github.com/joeig/eee-safe
 
 ### Configuration
 
-After that, copy [`config.dist.yml`](config.dist.yml) to `config.yml`, replace the default settings and run the binary:
+After that, copy [`config.dist.yml`](configs/config.dist.yml) to `config.yml`, replace the default settings and run the binary:
 
 ~~~ bash
 eee-safe -config=/path/to/config.yml
 ~~~
+
+If you're intending to add the application to your systemd runlevel, you may want to take a look at [`init/eee-safe.service`](init/eee-safe.service).
 
 #### DynamoDB settings
 
@@ -89,3 +91,5 @@ Run `eee-safe` in debug mode in order to increase the verbosity tremendously: `-
 ## Contribution
 
 Feel free to contribute. This is the API reference: [Cryptography Whitepaper](https://threema.ch/press-files/2_documentation/cryptography_whitepaper.pdf)
+
+This project follows the [Standard Go Project Layout](https://github.com/golang-standards/project-layout) principals.

@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetConfigHandler(t *testing.T) {
-	configFile := "config.dist.yml"
+	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	router := getGinEngine()
 	res := httptest.NewRecorder()

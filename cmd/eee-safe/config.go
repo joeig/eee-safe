@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/storage"
-	"github.com/joeig/eee-safe/storage/dynamodb"
-	"github.com/joeig/eee-safe/storage/filesystem"
+	"github.com/joeig/eee-safe/pkg/storage"
+	"github.com/joeig/eee-safe/pkg/storage/dynamodb"
+	"github.com/joeig/eee-safe/pkg/storage/filesystem"
 	"github.com/spf13/viper"
 )
 

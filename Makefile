@@ -14,13 +14,13 @@ GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 all: check-fmt fmt test build
 
 build:
-	$(GOBUILD) -o $(BINARY_NAME) -v
+	$(GOBUILD) -o $(BINARY_NAME) -v ./cmd/eee-safe
 
 build-linux-amd64:
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/eee-safe
 
 test:
-	mkdir -p threema-backups
+	mkdir -p cmd/eee-safe/threema-backups
 	$(GOTEST) -v ./...
 
 check-fmt:

@@ -2,7 +2,7 @@ package filesystem
 
 import (
 	"fmt"
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/threema"
 	"testing"
 )
 

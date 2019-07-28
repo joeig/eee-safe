@@ -2,7 +2,7 @@ package storage
 
 import (
 	"fmt"
-	"github.com/joeig/eee-safe/threema"
+	"github.com/joeig/eee-safe/pkg/threema"
 )
 
 // StorageBackendError is being used whenever a storage backend error occurred
