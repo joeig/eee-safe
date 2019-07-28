@@ -71,6 +71,6 @@ func setStorageBackend(s *storage.StorageBackend) {
 	case StorageBackendTypeDynamoDB:
 		*s = &config.StorageBackends.DynamoDB
 	default:
-		panic(fmt.Errorf("Invalid dnsProviderType \"%s\"", config.StorageBackendType))
+		panic(fmt.Errorf("invalid storageBackendType \"%s\"", config.StorageBackendType))
 	}
 }
