@@ -12,7 +12,7 @@ Currently supported backends:
 
 ## Client setup
 
-Threema supports third party backup servers out of the box. Simply choose "Backup", "Expert settings" and disable "Use default server". You will be asked for your custom server endpoint and credentials.
+Threema supports third party backup servers out of the box. Simply choose "Threema Safe", "Expert settings" and deactivate "Use default server". You will be asked for your custom server endpoint and credentials.
 
 ## Server setup
 
@@ -34,18 +34,32 @@ eee-safe -config=/path/to/config.yml
 
 If you're intending to add the application to your systemd runlevel, you may want to take a look at [`init/eee-safe.service`](init/eee-safe.service).
 
+Threema requires a valid CA certificate.
+
+Choose one of the following storage backends:
+
+Storage backend | DynamoDB | Filesystem
+--------------- | -------- | ----------
+Built-in TTL    | yes      | no
+Thread safe     | yes      | no
+Works without further efforts | no | yes
+
 #### DynamoDB settings
 
 This option requires a pre-configured AWS environment.
 
 ##### Table settings
 
+Create a new table with the following settings:
+
+* Table name in this example: `EEESafe`
 * Primary key: `backupID`
 * Time to live attribute: `expirationTime`
+* Turn backup functionality on if required.
 
 ##### IAM
 
-Required IAM permissions:
+Required IAM permissions to access the DynamoDB table (change the resource ARN if necessary):
 
 ~~~ json
 {
@@ -82,7 +96,7 @@ See also: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.ht
 
 This option stores every backup in a dedicated file on the local filesystem.
 
-This storage backend does currently **not** support auto-deletion of expired backups. You probably want to workaround this constraint using a `find` cronjob.
+This storage backend does currently **not** support thread-safety and auto-deletion of expired backups. You probably want to implement auto-deletion by using a `find` cronjob.
 
 ## Troubleshooting
 
