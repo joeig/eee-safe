@@ -1,6 +1,7 @@
 GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
+GOCOVER=$(GOCMD) tool cover
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 GOFMT=gofmt
@@ -9,15 +10,19 @@ BINARY_NAME=eee-safe
 GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 .DEFAULT_GOAL := all
-.PHONY: all build build-linux-amd64 test check-fmt fmt clean run deps
+.PHONY: all build build-linux-amd64 coverage test check-fmt fmt clean run deps
 
-all: check-fmt fmt test build
+all: check-fmt test coverage build
 
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v ./cmd/eee-safe
 
 build-linux-amd64:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/eee-safe
+
+coverage:
+	$(GOTEST) -v ./... -coverprofile=c.out
+	$(GOCOVER) -func=c.out
 
 test:
 	mkdir -p cmd/eee-safe/threema-backups
