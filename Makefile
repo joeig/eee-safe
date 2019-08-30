@@ -21,12 +21,11 @@ build-linux-amd64:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/eee-safe
 
 coverage:
-	$(GOTEST) -v ./... -coverprofile=c.out
 	$(GOCOVER) -func=c.out
 
 test:
 	mkdir -p cmd/eee-safe/threema-backups
-	$(GOTEST) -v ./...
+	$(GOTEST) -v ./... -coverprofile=c.out
 
 check-fmt:
 	$(GOFMT) -d ${GOFILES}
