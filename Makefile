@@ -25,7 +25,7 @@ coverage:
 
 test:
 	mkdir -p cmd/eee-safe/threema-backups
-	$(GOTEST) -v ./... -coverprofile=c.out
+	$(GOTEST) -v ./... -covermode=count -coverprofile=c.out
 
 check-fmt:
 	$(GOFMT) -d ${GOFILES}
