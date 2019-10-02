@@ -30,8 +30,6 @@ func GetBackupHandler(c *gin.Context) {
 	if !backup.CreationTime.IsZero() {
 		c.Header("Date", backup.CreationTime.Format(http.TimeFormat))
 	}
-	if !backup.ExpirationTime.IsZero() {
-		c.Header("Expires", backup.ExpirationTime.Format(http.TimeFormat))
-	}
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	c.Data(http.StatusOK, "application/octet-stream", backup.EncryptedBackup)
 }
