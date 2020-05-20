@@ -9,7 +9,7 @@ BINARY_NAME=eee-safe
 GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 .DEFAULT_GOAL := all
-.PHONY: all build build-linux-amd64 coverage test check-fmt fmt clean run
+.PHONY: all build build-linux-amd64 coverage test check-fmt fmt clean run run-debug
 
 all: check-fmt test coverage build
 
