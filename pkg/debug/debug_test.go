@@ -19,6 +19,7 @@ func assertDebugOutput(t *testing.T, debugMode bool, input string, outputExpecte
 	Printf(input)
 
 	outChannel := make(chan string)
+
 	go func() {
 		var buf bytes.Buffer
 		_, _ = io.Copy(&buf, r)

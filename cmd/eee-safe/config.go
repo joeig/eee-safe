@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/storage/dynamodb"
@@ -11,9 +12,9 @@ import (
 
 // Config contains the primary configuration structure of the application
 type Config struct {
-	Server             Server                     `mapstructure:"server"`
-	StorageBackendType storage.StorageBackendType `mapstructure:"storageBackendType"`
-	StorageBackends    StorageBackends            `mapstructure:"storageBackends"`
+	Server             Server              `mapstructure:"server"`
+	StorageBackendType storage.BackendType `mapstructure:"storageBackendType"`
+	StorageBackends    StorageBackends     `mapstructure:"storageBackends"`
 }
 
 // Server defines the structure of the server configuration
@@ -47,9 +48,11 @@ var config Config
 
 func parseConfig(config *Config, configFile *string) {
 	viper.SetConfigFile(*configFile)
+
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("%s", err))
 	}
+
 	if err := viper.Unmarshal(&config); err != nil {
 		panic(fmt.Errorf("%s", err))
 	}
@@ -57,14 +60,14 @@ func parseConfig(config *Config, configFile *string) {
 
 const (
 	// StorageBackendTypeFilesystem sets the storage backend type to "filesystem"
-	StorageBackendTypeFilesystem storage.StorageBackendType = "filesystem"
+	StorageBackendTypeFilesystem storage.BackendType = "filesystem"
 	// StorageBackendTypeDynamoDB sets the storage backend type to "filesystem"
-	StorageBackendTypeDynamoDB storage.StorageBackendType = "dynamodb"
+	StorageBackendTypeDynamoDB storage.BackendType = "dynamodb"
 )
 
-var storageBackend storage.StorageBackend
+var storageBackend storage.Backend
 
-func setStorageBackend(s *storage.StorageBackend) {
+func setStorageBackend(s *storage.Backend) {
 	switch config.StorageBackendType {
 	case StorageBackendTypeFilesystem:
 		*s = &config.StorageBackends.Filesystem

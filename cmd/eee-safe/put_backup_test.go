@@ -2,33 +2,38 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/threema"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joeig/eee-safe/pkg/threema"
 )
 
-func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, encryptedBackup []byte, contentType string, assertedCode int) *httptest.ResponseRecorder {
+func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, encryptedBackup []byte, contentType string, assertedCode int) { // nolint:interfacer
 	url := fmt.Sprintf("/backups/%s", backupID)
 	body := strings.NewReader(string(encryptedBackup))
+
 	req, _ := http.NewRequest(http.MethodPut, url, body)
 	req.SetBasicAuth("jonathan", "byers")
 	req.Header.Set("Content-Type", contentType)
 	req.Header.Set("User-Agent", "Threema")
+
 	res := httptest.NewRecorder()
+
 	router.ServeHTTP(res, req)
+
 	if res.Code != assertedCode {
 		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
 	}
-	return res
 }
 
 func TestPutBackupHandler(t *testing.T) {
 	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	setStorageBackend(&storageBackend)
+
 	router := getGinEngine()
 
 	// OK

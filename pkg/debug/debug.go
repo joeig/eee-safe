@@ -19,6 +19,7 @@ func Printf(format string, values ...interface{}) {
 		if !strings.HasSuffix(format, "\n") {
 			format += "\n"
 		}
+
 		_, _ = fmt.Fprintf(os.Stderr, PrintPrefix+format, values...)
 	}
 }

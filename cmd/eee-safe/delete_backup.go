@@ -1,11 +1,12 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/threema"
-	"log"
-	"net/http"
 )
 
 // DeleteBackupHandler Gin route
@@ -14,17 +15,22 @@ func DeleteBackupHandler(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 		c.Data(http.StatusBadRequest, "", []byte{})
+
 		return
 	}
+
 	if err := storageBackend.DeleteBackup(threemaSafeBackupID); err != nil {
 		log.Println(err)
+
 		switch err.(type) {
 		case *storage.BackupIDNotFoundError:
 			c.Data(http.StatusNotFound, "", []byte{})
 		default:
 			c.Data(http.StatusInternalServerError, "", []byte{})
 		}
+
 		return
 	}
+
 	c.Data(http.StatusOK, "", []byte{})
 }

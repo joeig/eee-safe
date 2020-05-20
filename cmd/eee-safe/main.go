@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/debug"
 	"log"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joeig/eee-safe/pkg/debug"
 )
 
 // BuildVersion is set at linking time
@@ -32,6 +33,7 @@ func main() {
 	// Initialize configuration
 	parseConfig(&config, configFile)
 	setStorageBackend(&storageBackend)
+
 	debug.Debug = *debugFlag
 	if debug.Debug {
 		gin.SetMode("debug")
@@ -46,5 +48,6 @@ func main() {
 	if config.Server.TLS.Enable {
 		log.Fatal(router.RunTLS(config.Server.ListenAddress, config.Server.TLS.CertFile, config.Server.TLS.KeyFile))
 	}
+
 	log.Fatal(router.Run(config.Server.ListenAddress))
 }

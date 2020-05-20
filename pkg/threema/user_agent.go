@@ -10,5 +10,6 @@ func ValidateUserAgent(userAgent string) error {
 	if !strings.Contains(userAgent, ValidUserAgentSubstring) {
 		return &InvalidUserAgentError{userAgent}
 	}
+
 	return nil
 }

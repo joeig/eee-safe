@@ -2,30 +2,35 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/threema"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joeig/eee-safe/pkg/threema"
 )
 
-func assertDeleteBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, assertedCode int) *httptest.ResponseRecorder {
+func assertDeleteBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, assertedCode int) { // nolint:interfacer
 	url := fmt.Sprintf("/backups/%s", backupID)
+
 	req, _ := http.NewRequest(http.MethodDelete, url, nil)
 	req.SetBasicAuth("jonathan", "byers")
 	req.Header.Set("User-Agent", "Threema")
+
 	res := httptest.NewRecorder()
+
 	router.ServeHTTP(res, req)
+
 	if res.Code != assertedCode {
 		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
 	}
-	return res
 }
 
 func TestDeleteBackupHandler(t *testing.T) {
 	configFile := "../../configs/config.dist.yml"
 	parseConfig(&config, &configFile)
 	setStorageBackend(&storageBackend)
+
 	router := getGinEngine()
 
 	// OK

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // HealthStatus contains information regarding the healthiness of the application
