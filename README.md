@@ -21,7 +21,7 @@ Threema supports third party backup servers out of the box. Simply choose "Three
 You need `go` and `GOBIN` in your `PATH`. Once that is done, install `eee-safe` using the following command:
 
 ~~~ bash
-go get -u github.com/joeig/eee-safe
+go get -u github.com/joeig/eee-safe/cmd/eee-safe
 ~~~
 
 ### Configuration
