@@ -2,7 +2,7 @@
 
 A custom Threema Safe server implementation with multi-backend support.
 
-[![Build Status](https://travis-ci.org/joeig/eee-safe.svg?branch=master)](https://travis-ci.org/joeig/eee-safe)
+[![Tests](https://github.com/joeig/eee-safe/workflows/Tests/badge.svg)](https://github.com/joeig/eee-safe/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/joeig/eee-safe)](https://goreportcard.com/report/github.com/joeig/eee-safe)
 
 Currently supported backends:
