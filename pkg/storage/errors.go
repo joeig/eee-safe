@@ -2,15 +2,16 @@ package storage
 
 import (
 	"fmt"
+
 	"github.com/joeig/eee-safe/pkg/threema"
 )
 
-// StorageBackendError is being used whenever a storage backend error occurred
-type StorageBackendError struct {
+// BackendError is being used whenever a storage backend error occurred
+type BackendError struct {
 	APIError interface{}
 }
 
-func (e *StorageBackendError) Error() string {
+func (e *BackendError) Error() string {
 	return fmt.Sprintf("Storage Backend API error: %v", e.APIError)
 }
 

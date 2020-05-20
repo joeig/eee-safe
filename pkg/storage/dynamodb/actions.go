@@ -1,6 +1,10 @@
 package dynamodb
 
 import (
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
@@ -8,9 +12,6 @@ import (
 	"github.com/joeig/eee-safe/pkg/debug"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/threema"
-	"strconv"
-	"strings"
-	"time"
 )
 
 // PutBackup stores a backup to DynamoDB
@@ -19,12 +20,15 @@ func (d *DynamoDB) PutBackup(backupInput *threema.BackupInput) error {
 	svc := dynamodb.New(sess)
 	input := d.generatePutItemInput(backupInput)
 	result, err := svc.PutItem(input)
+
 	debug.Printf("Input: %+v", input)
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
+
 	if err != nil {
-		return &storage.StorageBackendError{APIError: err}
+		return &storage.BackendError{APIError: err}
 	}
+
 	return nil
 }
 
@@ -34,19 +38,25 @@ func (d *DynamoDB) GetBackup(backupID threema.BackupID) (*threema.BackupOutput, 
 	svc := dynamodb.New(sess)
 	input := d.generateGetItemInput(backupID)
 	result, err := svc.GetItem(input)
+
 	debug.Printf("Input: %+v", input)
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
+
 	if err != nil {
-		return &threema.BackupOutput{}, &storage.StorageBackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
 	}
+
 	var resultItem item
+
 	if err := dynamodbattribute.UnmarshalMap(result.Item, &resultItem); err != nil {
-		return &threema.BackupOutput{}, &storage.StorageBackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
 	}
+
 	if len(resultItem.EncryptedBackup) == 0 {
 		return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
 	}
+
 	return &threema.BackupOutput{
 		BackupID:        backupID,
 		EncryptedBackup: threema.EncryptedBackup(resultItem.EncryptedBackup),
@@ -61,19 +71,25 @@ func (d *DynamoDB) DeleteBackup(backupID threema.BackupID) error {
 	svc := dynamodb.New(sess)
 	input := d.generateDeleteItemInput(backupID)
 	result, err := svc.DeleteItem(input)
+
 	debug.Printf("Input: %+v", input)
 	debug.Printf("Result: %+v", result)
 	debug.Printf("Error: %+v", err)
+
 	if err != nil {
-		return &storage.StorageBackendError{APIError: err}
+		return &storage.BackendError{APIError: err}
 	}
+
 	var resultItem item
+
 	if err := dynamodbattribute.UnmarshalMap(result.Attributes, &resultItem); err != nil {
-		return &storage.StorageBackendError{APIError: err}
+		return &storage.BackendError{APIError: err}
 	}
+
 	if len(resultItem.EncryptedBackup) == 0 {
 		return &storage.BackupIDNotFoundError{BackupID: backupID}
 	}
+
 	return nil
 }
 
@@ -88,6 +104,7 @@ func (d *DynamoDB) generatePutItemInput(backup *threema.BackupInput) *dynamodb.P
 	creationTime := strconv.FormatInt(time.Now().Unix(), 10)
 	expirationTime := strconv.FormatInt(time.Now().AddDate(0, 0, int(backup.RetentionDays)).Unix(), 10)
 	returnValues := "ALL_OLD"
+
 	return &dynamodb.PutItemInput{
 		Item: map[string]*dynamodb.AttributeValue{
 			"backupID": {
@@ -110,6 +127,7 @@ func (d *DynamoDB) generatePutItemInput(backup *threema.BackupInput) *dynamodb.P
 
 func (d *DynamoDB) generateGetItemInput(backupID threema.BackupID) *dynamodb.GetItemInput {
 	projectionExpression := "encryptedBackup, creationTime, expirationTime"
+
 	return &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"backupID": {
@@ -123,6 +141,7 @@ func (d *DynamoDB) generateGetItemInput(backupID threema.BackupID) *dynamodb.Get
 
 func (d *DynamoDB) generateDeleteItemInput(backupID threema.BackupID) *dynamodb.DeleteItemInput {
 	returnValues := "ALL_OLD"
+
 	return &dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"backupID": {

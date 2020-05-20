@@ -1,4 +1,7 @@
+# github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6
+## explicit
 # github.com/aws/aws-sdk-go v1.16.11
+## explicit
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/awserr
 github.com/aws/aws-sdk-go/aws/awsutil
@@ -33,18 +36,28 @@ github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
 github.com/aws/aws-sdk-go/service/dynamodb
 github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute
 github.com/aws/aws-sdk-go/service/sts
+# github.com/coreos/etcd v3.3.10+incompatible
+## explicit
+# github.com/coreos/go-etcd v2.0.0+incompatible
+## explicit
+# github.com/coreos/go-semver v0.2.0
+## explicit
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
 # github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
+## explicit
 github.com/gin-contrib/sse
 # github.com/gin-gonic/gin v1.3.0
+## explicit
 github.com/gin-gonic/gin
 github.com/gin-gonic/gin/binding
 github.com/gin-gonic/gin/json
 github.com/gin-gonic/gin/render
 # github.com/golang/protobuf v0.0.0-20170601230230-5a0f697c9ed9
+## explicit
 github.com/golang/protobuf/proto
 # github.com/google/uuid v1.1.0
+## explicit
 github.com/google/uuid
 # github.com/hashicorp/hcl v1.0.0
 github.com/hashicorp/hcl
@@ -60,34 +73,49 @@ github.com/hashicorp/hcl/json/token
 # github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af
 github.com/jmespath/go-jmespath
 # github.com/json-iterator/go v0.0.0-20170829155851-36b14963da70
+## explicit
 github.com/json-iterator/go
 # github.com/magiconair/properties v1.8.0
 github.com/magiconair/properties
 # github.com/mattn/go-isatty v0.0.2-0.20170307163044-57fdcb988a5c
+## explicit
 github.com/mattn/go-isatty
 # github.com/mitchellh/mapstructure v1.1.2
+## explicit
 github.com/mitchellh/mapstructure
 # github.com/pelletier/go-toml v1.2.0
 github.com/pelletier/go-toml
 # github.com/spf13/afero v1.2.0
+## explicit
 github.com/spf13/afero
 github.com/spf13/afero/mem
 # github.com/spf13/cast v1.3.0
+## explicit
 github.com/spf13/cast
 # github.com/spf13/jwalterweatherman v1.0.0
 github.com/spf13/jwalterweatherman
 # github.com/spf13/pflag v1.0.3
+## explicit
 github.com/spf13/pflag
 # github.com/spf13/viper v1.2.1
+## explicit
 github.com/spf13/viper
 # github.com/ugorji/go v0.0.0-20170215201144-c88ee250d022
+## explicit
 github.com/ugorji/go/codec
+# github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77
+## explicit
+# golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9
+## explicit
 # golang.org/x/sys v0.0.0-20181228144115-9a3f9b0469bb
+## explicit
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 # gopkg.in/go-playground/validator.v8 v8.18.1
+## explicit
 gopkg.in/go-playground/validator.v8
 # gopkg.in/yaml.v2 v2.2.2
+## explicit
 gopkg.in/yaml.v2

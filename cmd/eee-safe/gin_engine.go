@@ -13,5 +13,6 @@ func getGinEngine() *gin.Engine {
 	router.PUT("/backups/:threemaSafeBackupID", PutBackupHandler)
 	router.GET("/backups/:threemaSafeBackupID", GetBackupHandler)
 	router.DELETE("/backups/:threemaSafeBackupID", DeleteBackupHandler)
+
 	return router
 }
