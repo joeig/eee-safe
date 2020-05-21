@@ -12,6 +12,8 @@ jobs:
           go-version: 1.14
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
+      - name: Check format
+        run: make check-fmt
       - name: GolangCI-Lint
         run: |
           curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
@@ -34,8 +36,10 @@ jobs:
           go-version: ${{ matrix.goVer }}
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
-      - name: Make
-        run: make
+      - name: Run tests
+        run: make test
+      - name: Show test coverage
+        run: make coverage
       - name: Convert coverage to lcov
         uses: jandelgado/gcov2lcov-action@v1.0.0
         with:
@@ -52,3 +56,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goVer: [1.14]
+    steps:
+      - name: Set up Go ${{ matrix.goVer }}
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.goVer }}
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+      - name: Build
+        run: make build
