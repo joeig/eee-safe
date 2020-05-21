@@ -1,0 +1,114 @@
+---
+openapi: 3.0.1
+info:
+  title: eee-safe API
+  version: 1.0.0
+security:
+  - basicAuth: []
+servers:
+  - url: https://localhost:8000
+paths:
+  /config:
+    parameters:
+      - $ref: '#/components/parameters/userAgent'
+    get:
+      summary: Request server configuration
+      tags:
+        - Meta
+      responses:
+        '200':
+          description: Server configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  maxBackupBytes:
+                    type: number
+                  retentionDays:
+                    type: number
+                example:
+                  maxBackupBytes: 524288
+                  retentionDays: 180
+        '400':
+          $ref: '#/components/responses/validationFailed'
+        '429':
+          $ref: '#/components/responses/rateLimitReached'
+  /backups/{backupId}:
+    parameters:
+      - name: backupId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^[a-fA-F0-9]{64}$'
+      - $ref: '#/components/parameters/userAgent'
+    put:
+      summary: Create/update backup
+      tags:
+        - Backups
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Backup was created/updated successfully
+        '400':
+          $ref: '#/components/responses/validationFailed'
+        '429':
+          $ref: '#/components/responses/rateLimitReached'
+    get:
+      summary: Retrieve backup
+      tags:
+        - Backups
+      responses:
+        '200':
+          description: Backup
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/validationFailed'
+        '404':
+          $ref: '#/components/responses/backupNotFound'
+        '429':
+          $ref: '#/components/responses/rateLimitReached'
+    delete:
+      summary: Delete backup
+      tags:
+        - Backups
+      responses:
+        '200':
+          description: Backup deleted successfully
+        '400':
+          $ref: '#/components/responses/validationFailed'
+        '404':
+          $ref: '#/components/responses/backupNotFound'
+        '429':
+          $ref: '#/components/responses/rateLimitReached'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  parameters:
+    userAgent:
+      name: User-Agent
+      in: header
+      schema:
+        type: string
+        default: Threema
+        pattern: '^.*Threema.*$'
+      required: true
+  responses:
+    validationFailed:
+      description: Validation failed
+    rateLimitReached:
+      description: Rate limit reached
+    backupNotFound:
+      description: No backup was found
