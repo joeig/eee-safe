@@ -37,10 +37,8 @@ clean:
 	rm -f $(BINARY_NAME)
 	rm -f $(BINARY_NAME)_linux_amd64
 
-run:
-	$(GOBUILD) -o $(BINARY_NAME) -v
-	./$(BINARY_NAME)
+run: build
+	./$(BINARY_NAME) -config=configs/config.yml
 
-run-debug:
-	$(GOBUILD) -o $(BINARY_NAME) -v
-	./$(BINARY_NAME) -debug
+run-debug: build
+	./$(BINARY_NAME) -config=configs/config.yml -debug
