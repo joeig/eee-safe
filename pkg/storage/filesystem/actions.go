@@ -22,6 +22,9 @@ func (f *Filesystem) PutBackup(backupInput *threema.BackupInput) error {
 		return err
 	}
 
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
 	if err := ioutil.WriteFile(fileName, backupInput.EncryptedBackup, f.Permissions); err != nil {
 		return &FileNotWritableError{FileName: fileName, UpstreamError: err}
 	}
@@ -37,6 +40,9 @@ func (f *Filesystem) GetBackup(backupID threema.BackupID) (*threema.BackupOutput
 	if err != nil {
 		return &threema.BackupOutput{}, err
 	}
+
+	f.mu.RLock()
+	defer f.mu.RUnlock()
 
 	info, err := os.Stat(fileName)
 	if err != nil {
@@ -73,6 +79,9 @@ func (f *Filesystem) DeleteBackup(backupID threema.BackupID) error {
 	if err != nil {
 		return err
 	}
+
+	f.mu.Lock()
+	defer f.mu.Unlock()
 
 	if err := os.Remove(fileName); err != nil {
 		if os.IsNotExist(err) {
