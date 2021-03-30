@@ -34,7 +34,7 @@ func GetBackupHandler(c *gin.Context) {
 	}
 
 	if !backup.CreationTime.IsZero() {
-		c.Header("Date", backup.CreationTime.Format(http.TimeFormat))
+		c.Header("Last-Modified", backup.CreationTime.Format(http.TimeFormat))
 	}
 
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
