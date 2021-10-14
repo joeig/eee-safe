@@ -8,7 +8,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/debug"
+	"github.com/joeig/eee-safe/pkg/threema"
 )
+
+// StorageBackend is an interface for basic storage operations
+type StorageBackend interface {
+	PutBackup(backupInput *threema.BackupInput) error
+	GetBackup(backupID threema.BackupID) (*threema.BackupOutput, error)
+	DeleteBackup(backupID threema.BackupID) error
+}
 
 // BuildVersion is set at linking time
 var BuildVersion string
