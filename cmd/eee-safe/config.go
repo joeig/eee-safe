@@ -65,9 +65,9 @@ const (
 	StorageBackendTypeDynamoDB storage.BackendType = "dynamodb"
 )
 
-var storageBackend storage.Backend
+var storageBackend StorageBackend
 
-func setStorageBackend(s *storage.Backend) {
+func setStorageBackend(s *StorageBackend) {
 	switch config.StorageBackendType {
 	case StorageBackendTypeFilesystem:
 		*s = &config.StorageBackends.Filesystem
