@@ -9,7 +9,7 @@ import (
 )
 
 // PutBackupHandler Gin route
-func (a *AppCtx) PutBackupHandler(c *gin.Context) {
+func (a *AppContext) PutBackupHandler(c *gin.Context) {
 	if c.GetHeader("Content-Type") != "application/octet-stream" {
 		log.Println(&contentTypeInvalid{})
 

@@ -38,6 +38,7 @@ func (d *DynamoDB) PutBackup(ctx context.Context, backupInput *threema.BackupInp
 // GetBackup returns a backup from DynamoDB.
 func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*threema.BackupOutput, error) {
 	input := d.generateGetItemInput(backupID)
+
 	result, err := d.svc.GetItemWithContext(ctx, input)
 	if err != nil {
 		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
@@ -64,6 +65,7 @@ func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*t
 // DeleteBackup deletes a backup from DynamoDB.
 func (d *DynamoDB) DeleteBackup(ctx context.Context, backupID threema.BackupID) error {
 	input := d.generateDeleteItemInput(backupID)
+
 	result, err := d.svc.DeleteItemWithContext(ctx, input)
 	if err != nil {
 		return &storage.BackendError{APIError: err}

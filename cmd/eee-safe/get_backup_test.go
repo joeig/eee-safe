@@ -35,7 +35,7 @@ func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 }
 
 func TestGetBackupHandler(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
