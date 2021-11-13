@@ -1,7 +1,5 @@
-/c.out
 /cmd/eee-safe/threema-backups
 /configs/config.yml
-/eee-safe
-/eee-safe_linux_amd64
+/out/
 **/serverWithFullChain.crt
 **/server.key
