@@ -31,7 +31,7 @@ func (f *Filesystem) PutBackup(_ context.Context, backupInput *threema.BackupInp
 	defer f.mu.Unlock()
 
 	if err := ioutil.WriteFile(fileName, backupInput.EncryptedBackup, f.Permissions); err != nil {
-		return &FileNotWritableError{FileName: fileName, UpstreamError: err}
+		return &ErrFileNotWritable{FileName: fileName, UpstreamError: err}
 	}
 
 	return nil
@@ -50,19 +50,19 @@ func (f *Filesystem) GetBackup(_ context.Context, backupID threema.BackupID) (*t
 	info, err := os.Stat(fileName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
+			return &threema.BackupOutput{}, &storage.ErrBackupIDNotFound{BackupID: backupID}
 		}
 
-		return &threema.BackupOutput{}, &FileNotReadableError{FileName: fileName, UpstreamError: err}
+		return &threema.BackupOutput{}, &ErrFileNotReadable{FileName: fileName, UpstreamError: err}
 	}
 
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
+			return &threema.BackupOutput{}, &storage.ErrBackupIDNotFound{BackupID: backupID}
 		}
 
-		return &threema.BackupOutput{}, &FileNotReadableError{FileName: fileName, UpstreamError: err}
+		return &threema.BackupOutput{}, &ErrFileNotReadable{FileName: fileName, UpstreamError: err}
 	}
 
 	dataString := threema.EncryptedBackup(data)
@@ -86,10 +86,10 @@ func (f *Filesystem) DeleteBackup(_ context.Context, backupID threema.BackupID) 
 
 	if err := os.Remove(fileName); err != nil {
 		if os.IsNotExist(err) {
-			return &storage.BackupIDNotFoundError{BackupID: backupID}
+			return &storage.ErrBackupIDNotFound{BackupID: backupID}
 		}
 
-		return &FileNotRemovableError{FileName: fileName, UpstreamError: err}
+		return &ErrFileNotRemovable{FileName: fileName, UpstreamError: err}
 	}
 
 	return nil
@@ -97,7 +97,7 @@ func (f *Filesystem) DeleteBackup(_ context.Context, backupID threema.BackupID) 
 
 func (f *Filesystem) generateFileName(backupID threema.BackupID) (string, error) {
 	if f.Directory == "" {
-		return "", &DirectoryInvalidError{Directory: f.Directory}
+		return "", &ErrDirectoryInvalid{Directory: f.Directory}
 	}
 
 	return path.Join(f.Directory, strings.ToLower(backupID.String())), nil

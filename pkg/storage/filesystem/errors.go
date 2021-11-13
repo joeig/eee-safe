@@ -2,41 +2,41 @@ package filesystem
 
 import "fmt"
 
-// DirectoryInvalidError is being used whenever a given directory is invalid
-type DirectoryInvalidError struct {
+// ErrDirectoryInvalid is being used whenever a given directory is invalid
+type ErrDirectoryInvalid struct {
 	Directory string
 }
 
-func (e *DirectoryInvalidError) Error() string {
-	return fmt.Sprintf("Directory invalid: %s", e.Directory)
+func (e *ErrDirectoryInvalid) Error() string {
+	return fmt.Sprintf("directory invalid: %q", e.Directory)
 }
 
-// FileNotWritableError is being used whenever a file handler is not writable
-type FileNotWritableError struct {
+// ErrFileNotWritable is being used whenever a file handler is not writable
+type ErrFileNotWritable struct {
 	FileName      string
 	UpstreamError error
 }
 
-func (e *FileNotWritableError) Error() string {
-	return fmt.Sprintf("File not writable (\"%s\"): %v", e.FileName, e.UpstreamError)
+func (e *ErrFileNotWritable) Error() string {
+	return fmt.Sprintf("file not writable (%q): %v", e.FileName, e.UpstreamError)
 }
 
-// FileNotReadableError is being used whenever a file handler is not readable
-type FileNotReadableError struct {
+// ErrFileNotReadable is being used whenever a file handler is not readable
+type ErrFileNotReadable struct {
 	FileName      string
 	UpstreamError error
 }
 
-func (e *FileNotReadableError) Error() string {
-	return fmt.Sprintf("File not readable (\"%s\"): %v", e.FileName, e.UpstreamError)
+func (e *ErrFileNotReadable) Error() string {
+	return fmt.Sprintf("file not readable (%q): %v", e.FileName, e.UpstreamError)
 }
 
-// FileNotRemovableError is being used whenever a file handler is not removable
-type FileNotRemovableError struct {
+// ErrFileNotRemovable is being used whenever a file handler is not removable
+type ErrFileNotRemovable struct {
 	FileName      string
 	UpstreamError error
 }
 
-func (e *FileNotRemovableError) Error() string {
-	return fmt.Sprintf("File not removable (\"%s\"): %v", e.FileName, e.UpstreamError)
+func (e *ErrFileNotRemovable) Error() string {
+	return fmt.Sprintf("file not removable (%q): %v", e.FileName, e.UpstreamError)
 }
