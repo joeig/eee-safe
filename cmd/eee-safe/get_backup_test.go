@@ -38,7 +38,7 @@ func TestGetBackupHandler(t *testing.T) {
 		Config: &Config{},
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
-	setStorageBackend(appCtx.Config, &storageBackend)
+	_ = appCtx.InitializeStorageBackend()
 
 	router := getGinEngine(appCtx)
 
@@ -50,7 +50,7 @@ func TestGetBackupHandler(t *testing.T) {
 		EncryptedBackup: threema.EncryptedBackup("Foo"),
 		RetentionDays:   appCtx.Config.Server.Backups.RetentionDays,
 	}
-	_ = storageBackend.PutBackup(backupInput)
+	_ = appCtx.StorageBackend.PutBackup(backupInput)
 
 	// OK
 	t.Run("TestGetValidBackup", func(t *testing.T) {
@@ -71,5 +71,5 @@ func TestGetBackupHandler(t *testing.T) {
 	})
 
 	// Clean up
-	_ = storageBackend.DeleteBackup(backupID)
+	_ = appCtx.StorageBackend.DeleteBackup(backupID)
 }

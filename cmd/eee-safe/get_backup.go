@@ -19,7 +19,7 @@ func (a *AppCtx) GetBackupHandler(c *gin.Context) {
 		return
 	}
 
-	backup, err := storageBackend.GetBackup(threemaSafeBackupID)
+	backup, err := a.StorageBackend.GetBackup(threemaSafeBackupID)
 	if err != nil {
 		log.Println(err)
 
