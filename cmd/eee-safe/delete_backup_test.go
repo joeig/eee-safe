@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -41,7 +42,7 @@ func TestDeleteBackupHandler(t *testing.T) {
 	t.Run("TestDeleteValidBackup", func(t *testing.T) {
 		backupID, _ := threema.ConvertToBackupID("87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d")
 		backupInput := &threema.BackupInput{BackupID: backupID, EncryptedBackup: threema.EncryptedBackup("Foo")}
-		_ = appCtx.StorageBackend.PutBackup(backupInput)
+		_ = appCtx.StorageBackend.PutBackup(context.Background(), backupInput)
 		assertDeleteBackupHandlerComponent(t, router, "87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d", http.StatusOK)
 	})
 

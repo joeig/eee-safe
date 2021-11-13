@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -15,9 +16,9 @@ import (
 
 // StorageBackend is an interface for basic storage operations
 type StorageBackend interface {
-	PutBackup(backupInput *threema.BackupInput) error
-	GetBackup(backupID threema.BackupID) (*threema.BackupOutput, error)
-	DeleteBackup(backupID threema.BackupID) error
+	PutBackup(ctx context.Context, backupInput *threema.BackupInput) error
+	GetBackup(ctx context.Context, backupID threema.BackupID) (*threema.BackupOutput, error)
+	DeleteBackup(ctx context.Context, backupID threema.BackupID) error
 }
 
 // AppCtx contains the application context.

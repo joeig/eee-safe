@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -51,7 +52,7 @@ func TestGetBackupHandler(t *testing.T) {
 		EncryptedBackup: threema.EncryptedBackup("Foo"),
 		RetentionDays:   appCtx.Config.Server.Backups.RetentionDays,
 	}
-	_ = appCtx.StorageBackend.PutBackup(backupInput)
+	_ = appCtx.StorageBackend.PutBackup(context.Background(), backupInput)
 
 	// OK
 	t.Run("TestGetValidBackup", func(t *testing.T) {
@@ -72,5 +73,5 @@ func TestGetBackupHandler(t *testing.T) {
 	})
 
 	// Clean up
-	_ = appCtx.StorageBackend.DeleteBackup(backupID)
+	_ = appCtx.StorageBackend.DeleteBackup(context.Background(), backupID)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -64,5 +65,5 @@ func TestPutBackupHandler(t *testing.T) {
 
 	// Clean up
 	backupID, _ := threema.ConvertToBackupID("87df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d")
-	_ = appCtx.StorageBackend.DeleteBackup(backupID)
+	_ = appCtx.StorageBackend.DeleteBackup(context.Background(), backupID)
 }
