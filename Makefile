@@ -14,17 +14,20 @@ GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 all: check-fmt test coverage build
 
 build:
-	$(GOBUILD) -o $(BINARY_NAME) -v ./cmd/eee-safe
+	mkdir -p ./out
+	$(GOBUILD) -o ./out/$(BINARY_NAME) -v ./cmd/eee-safe
 
 build-linux-amd64:
-	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/eee-safe
+	mkdir -p ./out
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -o ./out/$(BINARY_NAME)_linux_amd64 -v ./cmd/eee-safe
 
 coverage:
-	$(GOCOVER) -func=c.out
+	$(GOCOVER) -func=./out/coverage.out
 
 test:
+	mkdir -p ./out
 	mkdir -p cmd/eee-safe/threema-backups
-	$(GOTEST) -v ./... -covermode=count -coverprofile=c.out
+	$(GOTEST) -v ./... -covermode=count -coverprofile=./out/coverage.out
 
 check-fmt:
 	$(GOFMT) -d ${GOFILES}
@@ -34,11 +37,10 @@ fmt:
 
 clean:
 	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
-	rm -f $(BINARY_NAME)_linux_amd64
+	rm -f ./out
 
 run: build
-	./$(BINARY_NAME) -config=configs/config.yml
+	./out/$(BINARY_NAME) -config=configs/config.yml
 
 run-debug: build
-	./$(BINARY_NAME) -config=configs/config.yml -debug
+	./out/$(BINARY_NAME) -config=configs/config.yml -debug

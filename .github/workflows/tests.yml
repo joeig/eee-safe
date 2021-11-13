@@ -43,14 +43,14 @@ jobs:
       - name: Convert coverage to lcov
         uses: jandelgado/gcov2lcov-action@v1.0.0
         with:
-          infile: c.out
-          outfile: c.lcov
+          infile: ./out/coverage.out
+          outfile: ./out/coverage.lcov
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@v1.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
-          path-to-lcov: c.lcov
+          path-to-lcov: ./out/coverage.lcov
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v1.0.1
         with:
