@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/storage/dynamodb"
@@ -69,6 +70,7 @@ func mapStorageBackendType(backendType storage.BackendType, backends *StorageBac
 	case StorageBackendTypeFilesystem:
 		return &backends.Filesystem
 	case StorageBackendTypeDynamoDB:
+		backends.DynamoDB.InitializeService(session.Must(session.NewSession()))
 		return &backends.DynamoDB
 	default:
 		return nil

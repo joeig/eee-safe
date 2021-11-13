@@ -44,7 +44,7 @@ func (a *AppCtx) PutBackupHandler(c *gin.Context) {
 		RetentionDays:   a.Config.Server.Backups.RetentionDays,
 	}
 
-	if err := a.StorageBackend.PutBackup(backupInput); err != nil {
+	if err := a.StorageBackend.PutBackup(c.Request.Context(), backupInput); err != nil {
 		log.Println(err)
 
 		c.Data(http.StatusInternalServerError, "", []byte{})
