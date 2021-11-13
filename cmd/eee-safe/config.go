@@ -17,6 +17,21 @@ type Config struct {
 	StorageBackends    StorageBackends     `mapstructure:"storageBackends"`
 }
 
+// Read reads uses a Viper to read a configuration file into a Config instance.
+func (c *Config) Read(viperCtx *viper.Viper, configFile string) error {
+	viperCtx.SetConfigFile(configFile)
+
+	if err := viperCtx.ReadInConfig(); err != nil {
+		return err
+	}
+
+	if err := viperCtx.Unmarshal(c); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Server defines the structure of the server configuration
 type Server struct {
 	ListenAddress string       `mapstructure:"listenaddress"`
@@ -44,20 +59,6 @@ type StorageBackends struct {
 	DynamoDB   dynamodb.DynamoDB     `mapstructure:"dynamodb"`
 }
 
-var config Config
-
-func parseConfig(config *Config, configFile *string) {
-	viper.SetConfigFile(*configFile)
-
-	if err := viper.ReadInConfig(); err != nil {
-		panic(fmt.Errorf("%s", err))
-	}
-
-	if err := viper.Unmarshal(&config); err != nil {
-		panic(fmt.Errorf("%s", err))
-	}
-}
-
 const (
 	// StorageBackendTypeFilesystem sets the storage backend type to "filesystem"
 	StorageBackendTypeFilesystem storage.BackendType = "filesystem"
@@ -67,7 +68,7 @@ const (
 
 var storageBackend StorageBackend
 
-func setStorageBackend(s *StorageBackend) {
+func setStorageBackend(config *Config, s *StorageBackend) {
 	switch config.StorageBackendType {
 	case StorageBackendTypeFilesystem:
 		*s = &config.StorageBackends.Filesystem

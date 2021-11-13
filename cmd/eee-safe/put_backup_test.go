@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/threema"
+	"github.com/spf13/viper"
 )
 
 func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, encryptedBackup []byte, contentType string, assertedCode int) { // nolint:interfacer
@@ -30,11 +31,13 @@ func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 }
 
 func TestPutBackupHandler(t *testing.T) {
-	configFile := "../../configs/config.dist.yml"
-	parseConfig(&config, &configFile)
-	setStorageBackend(&storageBackend)
+	appCtx := &AppCtx{
+		Config: &Config{},
+	}
+	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
+	setStorageBackend(appCtx.Config, &storageBackend)
 
-	router := getGinEngine()
+	router := getGinEngine(appCtx)
 
 	// OK
 	t.Run("TestPutValidBackup", func(t *testing.T) {

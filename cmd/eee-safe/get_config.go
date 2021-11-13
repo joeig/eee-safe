@@ -12,9 +12,9 @@ type statusBody struct {
 }
 
 // GetConfigHandler Gin route
-func GetConfigHandler(c *gin.Context) {
+func (a *AppCtx) GetConfigHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, statusBody{
-		MaxBackupBytes: config.Server.Backups.MaxBackupBytes,
-		RetentionDays:  config.Server.Backups.RetentionDays,
+		MaxBackupBytes: a.Config.Server.Backups.MaxBackupBytes,
+		RetentionDays:  a.Config.Server.Backups.RetentionDays,
 	})
 }

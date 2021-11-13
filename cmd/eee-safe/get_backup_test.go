@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/threema"
+	"github.com/spf13/viper"
 )
 
 func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID string, assertedEncryptedBackup []byte, assertedCode int) { // nolint:interfacer
@@ -33,12 +34,13 @@ func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 }
 
 func TestGetBackupHandler(t *testing.T) {
-	configFile := "../../configs/config.dist.yml"
+	appCtx := &AppCtx{
+		Config: &Config{},
+	}
+	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
+	setStorageBackend(appCtx.Config, &storageBackend)
 
-	parseConfig(&config, &configFile)
-	setStorageBackend(&storageBackend)
-
-	router := getGinEngine()
+	router := getGinEngine(appCtx)
 
 	// Initialization
 	backupIDString := "c8df5aaa32e3de72426e04e845d1251d87df5aaa32e3de72426e04e845d1251d"
@@ -46,7 +48,7 @@ func TestGetBackupHandler(t *testing.T) {
 	backupInput := &threema.BackupInput{
 		BackupID:        backupID,
 		EncryptedBackup: threema.EncryptedBackup("Foo"),
-		RetentionDays:   config.Server.Backups.RetentionDays,
+		RetentionDays:   appCtx.Config.Server.Backups.RetentionDays,
 	}
 	_ = storageBackend.PutBackup(backupInput)
 

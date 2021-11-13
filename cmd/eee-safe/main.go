@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/debug"
 	"github.com/joeig/eee-safe/pkg/threema"
+	"github.com/spf13/viper"
 )
 
 // StorageBackend is an interface for basic storage operations
@@ -16,6 +17,11 @@ type StorageBackend interface {
 	PutBackup(backupInput *threema.BackupInput) error
 	GetBackup(backupID threema.BackupID) (*threema.BackupOutput, error)
 	DeleteBackup(backupID threema.BackupID) error
+}
+
+// AppCtx contains the application context.
+type AppCtx struct {
+	Config *Config
 }
 
 // BuildVersion is set at linking time
@@ -33,14 +39,19 @@ func main() {
 
 	// Version
 	if *version {
-		fmt.Printf("Build Version: %s\n", BuildVersion)
-		fmt.Printf("Build Git Commit: %s\n", BuildGitCommit)
-		os.Exit(0)
+		printVersionAndExit(BuildVersion, BuildGitCommit)
 	}
 
-	// Initialize configuration
-	parseConfig(&config, configFile)
-	setStorageBackend(&storageBackend)
+	// Initialize the application context
+	appCtx := &AppCtx{
+		Config: &Config{},
+	}
+
+	if err := appCtx.Config.Read(viper.New(), *configFile); err != nil {
+		panic(err)
+	}
+
+	setStorageBackend(appCtx.Config, &storageBackend)
 
 	debug.Debug = *debugFlag
 	if debug.Debug {
@@ -50,12 +61,18 @@ func main() {
 	}
 
 	// Initialize Gin router
-	router := getGinEngine()
+	router := getGinEngine(appCtx)
 
 	// Run server
-	if config.Server.TLS.Enable {
-		log.Fatal(router.RunTLS(config.Server.ListenAddress, config.Server.TLS.CertFile, config.Server.TLS.KeyFile))
+	if appCtx.Config.Server.TLS.Enable {
+		log.Fatal(router.RunTLS(appCtx.Config.Server.ListenAddress, appCtx.Config.Server.TLS.CertFile, appCtx.Config.Server.TLS.KeyFile))
 	}
 
-	log.Fatal(router.Run(config.Server.ListenAddress))
+	log.Fatal(router.Run(appCtx.Config.Server.ListenAddress))
+}
+
+func printVersionAndExit(version, commit string) {
+	fmt.Printf("Build Version: %s\n", version)
+	fmt.Printf("Build Git Commit: %s\n", commit)
+	os.Exit(0)
 }
