@@ -33,12 +33,12 @@ type BackupOutput struct {
 func ConvertToBackupID(s string) (BackupID, error) {
 	backupIDHex, err := hex.DecodeString(s)
 	if err != nil {
-		return BackupID{}, &BackupIDStringInvalidError{BackupIDString: s, UpstreamError: err}
+		return BackupID{}, &ErrBackupIDStringInvalid{BackupIDString: s, UpstreamError: err}
 	}
 
 	sLength := len(backupIDHex)
 	if sLength != BackupIDLength {
-		return BackupID{}, &BackupIDStringLengthError{BackupIDString: s, DesiredLength: BackupIDLength * 2}
+		return BackupID{}, &ErrBackupIDStringLength{BackupIDString: s, DesiredLength: BackupIDLength * 2}
 	}
 
 	var threemaSafeBackupID BackupID
@@ -64,7 +64,7 @@ func (t *EncryptedBackup) Validate(maxBackupBytes uint) error {
 	tLength := len(*t)
 
 	if tLength == 0 || uint(tLength) > maxBackupBytes {
-		return &EncryptedBackupLengthError{EncryptedBackup: *t, MaxLength: maxBackupBytes}
+		return &ErrEncryptedBackupLength{EncryptedBackup: *t, MaxLength: maxBackupBytes}
 	}
 
 	return nil
