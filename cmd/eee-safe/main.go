@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -21,7 +22,20 @@ type StorageBackend interface {
 
 // AppCtx contains the application context.
 type AppCtx struct {
-	Config *Config
+	Config         *Config
+	StorageBackend StorageBackend
+}
+
+// InitializeStorageBackend takes the configured storage backend type and initializes the storage backend.
+func (a *AppCtx) InitializeStorageBackend() error {
+	storageBackend := mapStorageBackendType(a.Config.StorageBackendType, &a.Config.StorageBackends)
+	if storageBackend == nil {
+		return errors.New("invalid storage backend")
+	}
+
+	a.StorageBackend = storageBackend
+
+	return nil
 }
 
 // BuildVersion is set at linking time
@@ -31,18 +45,15 @@ var BuildVersion string
 var BuildGitCommit string
 
 func main() {
-	// Command line flags
 	configFile := flag.String("config", "config.yml", "Configuration file")
 	debugFlag := flag.Bool("debug", false, "Debug mode")
 	version := flag.Bool("version", false, "Prints the version name")
 	flag.Parse()
 
-	// Version
 	if *version {
 		printVersionAndExit(BuildVersion, BuildGitCommit)
 	}
 
-	// Initialize the application context
 	appCtx := &AppCtx{
 		Config: &Config{},
 	}
@@ -51,7 +62,9 @@ func main() {
 		panic(err)
 	}
 
-	setStorageBackend(appCtx.Config, &storageBackend)
+	if err := appCtx.InitializeStorageBackend(); err != nil {
+		panic(err)
+	}
 
 	debug.Debug = *debugFlag
 	if debug.Debug {
@@ -60,12 +73,14 @@ func main() {
 		gin.SetMode("release")
 	}
 
-	// Initialize Gin router
 	router := getGinEngine(appCtx)
 
-	// Run server
 	if appCtx.Config.Server.TLS.Enable {
-		log.Fatal(router.RunTLS(appCtx.Config.Server.ListenAddress, appCtx.Config.Server.TLS.CertFile, appCtx.Config.Server.TLS.KeyFile))
+		log.Fatal(router.RunTLS(
+			appCtx.Config.Server.ListenAddress,
+			appCtx.Config.Server.TLS.CertFile,
+			appCtx.Config.Server.TLS.KeyFile,
+		))
 	}
 
 	log.Fatal(router.Run(appCtx.Config.Server.ListenAddress))

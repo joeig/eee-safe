@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/storage/dynamodb"
@@ -66,15 +64,13 @@ const (
 	StorageBackendTypeDynamoDB storage.BackendType = "dynamodb"
 )
 
-var storageBackend StorageBackend
-
-func setStorageBackend(config *Config, s *StorageBackend) {
-	switch config.StorageBackendType {
+func mapStorageBackendType(backendType storage.BackendType, backends *StorageBackends) StorageBackend {
+	switch backendType {
 	case StorageBackendTypeFilesystem:
-		*s = &config.StorageBackends.Filesystem
+		return &backends.Filesystem
 	case StorageBackendTypeDynamoDB:
-		*s = &config.StorageBackends.DynamoDB
+		return &backends.DynamoDB
 	default:
-		panic(fmt.Errorf("invalid storageBackendType \"%s\"", config.StorageBackendType))
+		return nil
 	}
 }

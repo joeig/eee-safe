@@ -19,7 +19,7 @@ func (a *AppCtx) DeleteBackupHandler(c *gin.Context) {
 		return
 	}
 
-	if err := storageBackend.DeleteBackup(threemaSafeBackupID); err != nil {
+	if err := a.StorageBackend.DeleteBackup(threemaSafeBackupID); err != nil {
 		log.Println(err)
 
 		switch err.(type) {
