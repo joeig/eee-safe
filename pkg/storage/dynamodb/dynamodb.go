@@ -29,7 +29,7 @@ func (d *DynamoDB) InitializeService(sess client.ConfigProvider) {
 func (d *DynamoDB) PutBackup(ctx context.Context, backupInput *threema.BackupInput) error {
 	input := d.generatePutItemInput(backupInput)
 	if _, err := d.svc.PutItemWithContext(ctx, input); err != nil {
-		return &storage.BackendError{APIError: err}
+		return &storage.ErrUnknown{APIError: err}
 	}
 
 	return nil
@@ -41,17 +41,17 @@ func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*t
 
 	result, err := d.svc.GetItemWithContext(ctx, input)
 	if err != nil {
-		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.ErrUnknown{APIError: err}
 	}
 
 	var resultItem item
 
 	if err := dynamodbattribute.UnmarshalMap(result.Item, &resultItem); err != nil {
-		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
+		return &threema.BackupOutput{}, &storage.ErrUnknown{APIError: err}
 	}
 
 	if len(resultItem.EncryptedBackup) == 0 {
-		return &threema.BackupOutput{}, &storage.BackupIDNotFoundError{BackupID: backupID}
+		return &threema.BackupOutput{}, &storage.ErrBackupIDNotFound{BackupID: backupID}
 	}
 
 	return &threema.BackupOutput{
@@ -68,17 +68,17 @@ func (d *DynamoDB) DeleteBackup(ctx context.Context, backupID threema.BackupID) 
 
 	result, err := d.svc.DeleteItemWithContext(ctx, input)
 	if err != nil {
-		return &storage.BackendError{APIError: err}
+		return &storage.ErrUnknown{APIError: err}
 	}
 
 	var resultItem item
 
 	if err := dynamodbattribute.UnmarshalMap(result.Attributes, &resultItem); err != nil {
-		return &storage.BackendError{APIError: err}
+		return &storage.ErrUnknown{APIError: err}
 	}
 
 	if len(resultItem.EncryptedBackup) == 0 {
-		return &storage.BackupIDNotFoundError{BackupID: backupID}
+		return &storage.ErrBackupIDNotFound{BackupID: backupID}
 	}
 
 	return nil
