@@ -19,15 +19,15 @@ type StorageBackend interface {
 	DeleteBackup(ctx context.Context, backupID threema.BackupID) error
 }
 
-// AppCtx contains the application context.
-type AppCtx struct {
+// AppContext contains the application context.
+type AppContext struct {
 	Config             *Config
 	StorageBackend     StorageBackend
 	RequestIDGenerator RequestIDGenerator
 }
 
 // InitializeStorageBackend takes the configured storage backend type and initializes the storage backend.
-func (a *AppCtx) InitializeStorageBackend() error {
+func (a *AppContext) InitializeStorageBackend() error {
 	storageBackend := mapStorageBackendType(a.Config, &a.Config.StorageBackends)
 	if storageBackend == nil {
 		return errors.New("invalid storage backend")
@@ -56,7 +56,7 @@ func main() {
 		printVersionAndExit(BuildVersion, BuildGitCommit)
 	}
 
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewRandomRequestIDGenerator(),
 	}

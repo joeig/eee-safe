@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetHealthHandler(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}

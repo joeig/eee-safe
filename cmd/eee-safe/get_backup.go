@@ -10,7 +10,7 @@ import (
 )
 
 // GetBackupHandler Gin route
-func (a *AppCtx) GetBackupHandler(c *gin.Context) {
+func (a *AppContext) GetBackupHandler(c *gin.Context) {
 	threemaSafeBackupID, err := threema.ConvertToBackupID(c.Param("threemaSafeBackupID"))
 	if err != nil {
 		log.Println(err)

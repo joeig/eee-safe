@@ -10,7 +10,7 @@ import (
 )
 
 func TestGetConfigHandler(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}

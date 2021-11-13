@@ -9,7 +9,7 @@ import (
 )
 
 func TestRequestID(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
@@ -30,7 +30,7 @@ func TestRequestID(t *testing.T) {
 }
 
 func TestUnauthorizedAccess(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
@@ -51,7 +51,7 @@ func TestUnauthorizedAccess(t *testing.T) {
 }
 
 func TestInvalidUserAgent(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}

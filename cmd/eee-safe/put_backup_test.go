@@ -32,7 +32,7 @@ func assertPutBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 }
 
 func TestPutBackupHandler(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}

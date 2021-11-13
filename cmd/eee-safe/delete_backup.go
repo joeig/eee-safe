@@ -10,7 +10,7 @@ import (
 )
 
 // DeleteBackupHandler Gin route
-func (a *AppCtx) DeleteBackupHandler(c *gin.Context) {
+func (a *AppContext) DeleteBackupHandler(c *gin.Context) {
 	threemaSafeBackupID, err := threema.ConvertToBackupID(c.Param("threemaSafeBackupID"))
 	if err != nil {
 		log.Println(err)

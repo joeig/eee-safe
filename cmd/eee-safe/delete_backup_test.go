@@ -29,7 +29,7 @@ func assertDeleteBackupHandlerComponent(t *testing.T, router *gin.Engine, backup
 }
 
 func TestDeleteBackupHandler(t *testing.T) {
-	appCtx := &AppCtx{
+	appCtx := &AppContext{
 		Config:             &Config{},
 		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
