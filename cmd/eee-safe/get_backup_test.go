@@ -35,7 +35,8 @@ func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 
 func TestGetBackupHandler(t *testing.T) {
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 	_ = appCtx.InitializeStorageBackend()

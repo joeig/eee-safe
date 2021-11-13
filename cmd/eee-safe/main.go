@@ -22,8 +22,9 @@ type StorageBackend interface {
 
 // AppCtx contains the application context.
 type AppCtx struct {
-	Config         *Config
-	StorageBackend StorageBackend
+	Config             *Config
+	StorageBackend     StorageBackend
+	RequestIDGenerator RequestIDGenerator
 }
 
 // InitializeStorageBackend takes the configured storage backend type and initializes the storage backend.
@@ -45,6 +46,8 @@ var BuildVersion string
 var BuildGitCommit string
 
 func main() {
+	initialiseSeed()
+
 	configFile := flag.String("config", "config.yml", "Configuration file")
 	debugFlag := flag.Bool("debug", false, "Debug mode")
 	version := flag.Bool("version", false, "Prints the version name")
@@ -55,7 +58,8 @@ func main() {
 	}
 
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewRandomRequestIDGenerator(),
 	}
 
 	if err := appCtx.Config.Read(viper.New(), *configFile); err != nil {

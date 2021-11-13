@@ -5,7 +5,7 @@ import "github.com/gin-gonic/gin"
 // Initializes the Gin engine
 func getGinEngine(appCtx *AppCtx) *gin.Engine {
 	router := gin.Default()
-	router.Use(requestIDMiddleware())
+	router.Use(requestIDMiddleware(appCtx.RequestIDGenerator))
 	router.Use(gin.BasicAuth(appCtx.Config.Server.Accounts))
 	router.Use(validateUserAgentMiddleware())
 	router.GET("/health", appCtx.GetHealthHandler)

@@ -11,7 +11,8 @@ import (
 
 func TestGetConfigHandler(t *testing.T) {
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
