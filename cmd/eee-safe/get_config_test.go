@@ -5,13 +5,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/spf13/viper"
 )
 
 func TestGetConfigHandler(t *testing.T) {
-	configFile := "../../configs/config.dist.yml"
-	parseConfig(&config, &configFile)
+	appCtx := &AppCtx{
+		Config: &Config{},
+	}
+	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
-	router := getGinEngine()
+	router := getGinEngine(appCtx)
 	res := httptest.NewRecorder()
 
 	req, _ := http.NewRequest("GET", "/config", nil)
@@ -31,7 +35,7 @@ func TestGetConfigHandler(t *testing.T) {
 		t.Errorf("Cannot unmarshal status response body: %v", err)
 	}
 
-	if resStatusBody.RetentionDays != config.Server.Backups.RetentionDays || resStatusBody.MaxBackupBytes != config.Server.Backups.MaxBackupBytes {
+	if resStatusBody.RetentionDays != appCtx.Config.Server.Backups.RetentionDays || resStatusBody.MaxBackupBytes != appCtx.Config.Server.Backups.MaxBackupBytes {
 		t.Errorf("Config endpoint returns invalid values")
 	}
 }

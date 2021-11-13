@@ -4,13 +4,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/spf13/viper"
 )
 
 func TestGetHealthHandler(t *testing.T) {
-	configFile := "../../configs/config.dist.yml"
-	parseConfig(&config, &configFile)
+	appCtx := &AppCtx{
+		Config: &Config{},
+	}
+	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
-	router := getGinEngine()
+	router := getGinEngine(appCtx)
 	res := httptest.NewRecorder()
 
 	req, _ := http.NewRequest("GET", "/health", nil)

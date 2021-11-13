@@ -12,7 +12,7 @@ type HealthStatus struct {
 }
 
 // GetHealthHandler Gin route
-func GetHealthHandler(c *gin.Context) {
+func (a *AppCtx) GetHealthHandler(c *gin.Context) {
 	hs := &HealthStatus{
 		ApplicationRunning: true,
 	}
