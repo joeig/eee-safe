@@ -8,7 +8,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/joeig/eee-safe/pkg/debug"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/threema"
 )
@@ -23,10 +22,6 @@ type Filesystem struct {
 
 // PutBackup stores a backup to the filesystem
 func (f *Filesystem) PutBackup(_ context.Context, backupInput *threema.BackupInput) error {
-	if backupInput.RetentionDays != 0 {
-		debug.Printf("Filesystem storage backend does currently not support backup retention.")
-	}
-
 	fileName, err := f.generateFileName(backupInput.BackupID)
 	if err != nil {
 		return err
@@ -38,8 +33,6 @@ func (f *Filesystem) PutBackup(_ context.Context, backupInput *threema.BackupInp
 	if err := ioutil.WriteFile(fileName, backupInput.EncryptedBackup, f.Permissions); err != nil {
 		return &FileNotWritableError{FileName: fileName, UpstreamError: err}
 	}
-
-	debug.Printf("Writing file \"%s\" (%d bytes)", fileName, len(backupInput.EncryptedBackup))
 
 	return nil
 }
@@ -74,8 +67,6 @@ func (f *Filesystem) GetBackup(_ context.Context, backupID threema.BackupID) (*t
 
 	dataString := threema.EncryptedBackup(data)
 
-	debug.Printf("Reading file \"%s\" (%d bytes)", fileName, len(dataString))
-
 	return &threema.BackupOutput{
 		BackupID:        backupID,
 		EncryptedBackup: dataString,
@@ -100,8 +91,6 @@ func (f *Filesystem) DeleteBackup(_ context.Context, backupID threema.BackupID) 
 
 		return &FileNotRemovableError{FileName: fileName, UpstreamError: err}
 	}
-
-	debug.Printf("Deleting file \"%s\"", fileName)
 
 	return nil
 }

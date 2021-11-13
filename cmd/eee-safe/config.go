@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/storage"
@@ -65,13 +67,19 @@ const (
 	StorageBackendTypeDynamoDB storage.BackendType = "dynamodb"
 )
 
-func mapStorageBackendType(backendType storage.BackendType, backends *StorageBackends) StorageBackend {
-	switch backendType {
+func mapStorageBackendType(config *Config, backends *StorageBackends) StorageBackend {
+	switch config.StorageBackendType {
 	case StorageBackendTypeFilesystem:
+		if config.Server.Backups.RetentionDays != 0 {
+			log.Println("Filesystem storage backend does currently not support backup retention.")
+		}
+
 		return &backends.Filesystem
+
 	case StorageBackendTypeDynamoDB:
 		backends.DynamoDB.InitializeService(session.Must(session.NewSession()))
 		return &backends.DynamoDB
+
 	default:
 		return nil
 	}

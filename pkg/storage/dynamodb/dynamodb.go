@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/client"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/joeig/eee-safe/pkg/debug"
 	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/threema"
 )
@@ -29,13 +28,7 @@ func (d *DynamoDB) InitializeService(sess client.ConfigProvider) {
 // PutBackup stores a backup to DynamoDB.
 func (d *DynamoDB) PutBackup(ctx context.Context, backupInput *threema.BackupInput) error {
 	input := d.generatePutItemInput(backupInput)
-	result, err := d.svc.PutItemWithContext(ctx, input)
-
-	debug.Printf("Input: %+v", input)
-	debug.Printf("Result: %+v", result)
-	debug.Printf("Error: %+v", err)
-
-	if err != nil {
+	if _, err := d.svc.PutItemWithContext(ctx, input); err != nil {
 		return &storage.BackendError{APIError: err}
 	}
 
@@ -46,11 +39,6 @@ func (d *DynamoDB) PutBackup(ctx context.Context, backupInput *threema.BackupInp
 func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*threema.BackupOutput, error) {
 	input := d.generateGetItemInput(backupID)
 	result, err := d.svc.GetItemWithContext(ctx, input)
-
-	debug.Printf("Input: %+v", input)
-	debug.Printf("Result: %+v", result)
-	debug.Printf("Error: %+v", err)
-
 	if err != nil {
 		return &threema.BackupOutput{}, &storage.BackendError{APIError: err}
 	}
@@ -77,11 +65,6 @@ func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*t
 func (d *DynamoDB) DeleteBackup(ctx context.Context, backupID threema.BackupID) error {
 	input := d.generateDeleteItemInput(backupID)
 	result, err := d.svc.DeleteItemWithContext(ctx, input)
-
-	debug.Printf("Input: %+v", input)
-	debug.Printf("Result: %+v", result)
-	debug.Printf("Error: %+v", err)
-
 	if err != nil {
 		return &storage.BackendError{APIError: err}
 	}
