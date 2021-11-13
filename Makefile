@@ -37,7 +37,7 @@ fmt:
 
 clean:
 	$(GOCLEAN)
-	rm -f ./out
+	rm -rf ./out
 
 run: build
 	./out/$(BINARY_NAME) -config=configs/config.yml

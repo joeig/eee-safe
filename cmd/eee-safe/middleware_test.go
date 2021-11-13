@@ -10,7 +10,8 @@ import (
 
 func TestRequestID(t *testing.T) {
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
@@ -30,7 +31,8 @@ func TestRequestID(t *testing.T) {
 
 func TestUnauthorizedAccess(t *testing.T) {
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
@@ -50,7 +52,8 @@ func TestUnauthorizedAccess(t *testing.T) {
 
 func TestInvalidUserAgent(t *testing.T) {
 	appCtx := &AppCtx{
-		Config: &Config{},
+		Config:             &Config{},
+		RequestIDGenerator: NewMockRequestIDGenerator("foo"),
 	}
 	_ = appCtx.Config.Read(viper.New(), "../../configs/config.dist.yml")
 
