@@ -4,12 +4,10 @@ import (
 	"context"
 	"errors"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/debug"
 	"github.com/joeig/eee-safe/pkg/threema"
 	"github.com/spf13/viper"
 )
@@ -30,7 +28,7 @@ type AppCtx struct {
 
 // InitializeStorageBackend takes the configured storage backend type and initializes the storage backend.
 func (a *AppCtx) InitializeStorageBackend() error {
-	storageBackend := mapStorageBackendType(a.Config.StorageBackendType, &a.Config.StorageBackends)
+	storageBackend := mapStorageBackendType(a.Config, &a.Config.StorageBackends)
 	if storageBackend == nil {
 		return errors.New("invalid storage backend")
 	}
@@ -50,7 +48,7 @@ func main() {
 	initialiseSeed()
 
 	configFile := flag.String("config", "config.yml", "Configuration file")
-	debugFlag := flag.Bool("debug", false, "Debug mode")
+	debug := flag.Bool("debug", false, "Debug mode")
 	version := flag.Bool("version", false, "Prints the version name")
 	flag.Parse()
 
@@ -71,8 +69,7 @@ func main() {
 		panic(err)
 	}
 
-	debug.Debug = *debugFlag
-	if debug.Debug {
+	if *debug {
 		gin.SetMode("debug")
 	} else {
 		gin.SetMode("release")
@@ -92,7 +89,7 @@ func main() {
 }
 
 func printVersionAndExit(version, commit string) {
-	fmt.Printf("Build Version: %s\n", version)
-	fmt.Printf("Build Git Commit: %s\n", commit)
+	log.Printf("Build Version: %s\n", version)
+	log.Printf("Build Git Commit: %s\n", commit)
 	os.Exit(0)
 }
