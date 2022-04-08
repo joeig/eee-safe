@@ -16,7 +16,7 @@ jobs:
         run: make check-fmt
       - name: GolangCI-Lint
         run: |
-          curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
+          curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.45.2
           $(go env GOPATH)/bin/golangci-lint --version
           $(go env GOPATH)/bin/golangci-lint run
       - name: Staticcheck
