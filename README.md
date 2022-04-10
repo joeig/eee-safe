@@ -21,7 +21,7 @@ Threema supports third party backup servers out of the box. Simply choose "Three
 You need `go` and `GOBIN` in your `PATH`. Once that is done, install `eee-safe` using the following command:
 
 ~~~ bash
-go get -u github.com/joeig/eee-safe/cmd/eee-safe
+go install github.com/joeig/eee-safe/cmd/eee-safe@latest
 ~~~
 
 ### Configuration
@@ -38,11 +38,11 @@ Threema requires a valid CA certificate.
 
 Choose one of the following storage backends:
 
-Storage backend | DynamoDB | Filesystem
---------------- | -------- | ----------
-Built-in TTL    | yes      | no
-Thread safe     | yes      | no
-Works without further efforts | no | yes
+| Storage backend               | DynamoDB | Filesystem |
+|-------------------------------|----------|------------|
+| Built-in TTL                  | yes      | no         |
+| Thread safe                   | yes      | no         |
+| Works without further efforts | no       | yes        |
 
 #### DynamoDB settings
 
