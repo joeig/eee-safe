@@ -2,7 +2,6 @@ package filesystem
 
 import (
 	"context"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -30,7 +29,7 @@ func (f *Filesystem) PutBackup(_ context.Context, backupInput *threema.BackupInp
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	if err := ioutil.WriteFile(fileName, backupInput.EncryptedBackup, f.Permissions); err != nil {
+	if err := os.WriteFile(fileName, backupInput.EncryptedBackup, f.Permissions); err != nil {
 		return &ErrFileNotWritable{FileName: fileName, UpstreamError: err}
 	}
 
@@ -56,7 +55,7 @@ func (f *Filesystem) GetBackup(_ context.Context, backupID threema.BackupID) (*t
 		return &threema.BackupOutput{}, &ErrFileNotReadable{FileName: fileName, UpstreamError: err}
 	}
 
-	data, err := ioutil.ReadFile(fileName)
+	data, err := os.ReadFile(fileName)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return &threema.BackupOutput{}, &storage.ErrBackupIDNotFound{BackupID: backupID}
