@@ -1,5 +1,6 @@
 /cmd/eee-safe/threema-backups
 /configs/config.yml
 /out/
+/vendor/
 **/serverWithFullChain.crt
 **/server.key
