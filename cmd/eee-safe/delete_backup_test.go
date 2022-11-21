@@ -24,7 +24,7 @@ func assertDeleteBackupHandlerComponent(t *testing.T, router *gin.Engine, backup
 	router.ServeHTTP(res, req)
 
 	if res.Code != assertedCode {
-		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
+		t.Errorf("HTTP request to %q returned %d instead of %d", url, res.Code, assertedCode)
 	}
 }
 

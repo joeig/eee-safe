@@ -9,9 +9,22 @@ import (
 	"github.com/joeig/eee-safe/pkg/threema"
 )
 
+// DeleteBackupPathParams contains path parameters for DeleteBackupHandler.
+type DeleteBackupPathParams struct {
+	ThreemaSafeBackupID string `uri:"threemaSafeBackupID" binding:"required,hexadecimal,len=64"`
+}
+
 // DeleteBackupHandler Gin route
 func (a *AppContext) DeleteBackupHandler(c *gin.Context) {
-	threemaSafeBackupID, err := threema.ConvertToBackupID(c.Param("threemaSafeBackupID"))
+	var pathParams DeleteBackupPathParams
+	if err := c.ShouldBindUri(&pathParams); err != nil {
+		log.Println(err)
+		c.Data(http.StatusBadRequest, "", []byte{})
+
+		return
+	}
+
+	threemaSafeBackupID, err := threema.ConvertToBackupID(pathParams.ThreemaSafeBackupID)
 	if err != nil {
 		log.Println(err)
 		c.Data(http.StatusBadRequest, "", []byte{})
