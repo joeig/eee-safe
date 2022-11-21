@@ -10,7 +10,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/threema"
 )
 
 // initialiseSeed globally initialises math/rand with a cryptographically strong seed.
@@ -60,15 +59,20 @@ func requestIDMiddleware(generateRequestID RequestIDGenerator) gin.HandlerFunc {
 		ginCtx.Set(GinRequestIDSymbol, requestID)
 
 		log.SetPrefix(fmt.Sprintf("[%s] ", requestID))
-		log.Printf("Set request ID to \"%s\"", requestID)
+		log.Printf("Set request ID to %q", requestID)
 	}
 }
 
-// validateUserAgentMiddleware validates the Threema user agent.
+// ThreemaHeaderParams contains the header parameters for validateUserAgentMiddleware.
+type ThreemaHeaderParams struct {
+	UserAgent string `header:"User-Agent" binding:"required,eq=Threema"`
+}
+
+// validateUserAgentMiddleware validates the expected user agent.
 func validateUserAgentMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userAgent := c.GetHeader("User-Agent")
-		if err := threema.ValidateUserAgent(userAgent); err != nil {
+		var headerParams ThreemaHeaderParams
+		if err := c.ShouldBindHeader(&headerParams); err != nil {
 			log.Println(err)
 
 			c.String(http.StatusBadRequest, "")
@@ -77,7 +81,7 @@ func validateUserAgentMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		log.Printf("User agent header is valid: \"%s\"", userAgent)
+		log.Printf("User agent header is valid: %q", headerParams.UserAgent)
 
 		c.Next()
 	}

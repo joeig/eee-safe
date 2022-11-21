@@ -8,20 +8,36 @@ import (
 	"github.com/joeig/eee-safe/pkg/threema"
 )
 
+// PutBackupHeaderParams contains header parameters for PutBackupHandler.
+type PutBackupHeaderParams struct {
+	ContentType string `header:"Content-Type" binding:"required,eq=application/octet-stream"`
+}
+
+// PutBackupPathParams contains path parameters for PutBackupHandler.
+type PutBackupPathParams struct {
+	ThreemaSafeBackupID string `uri:"threemaSafeBackupID" binding:"required,hexadecimal,len=64"`
+}
+
 // PutBackupHandler Gin route
 func (a *AppContext) PutBackupHandler(c *gin.Context) {
-	if c.GetHeader("Content-Type") != "application/octet-stream" {
-		log.Println(&contentTypeInvalid{})
-
+	if err := c.ShouldBindHeader(&PutBackupHeaderParams{}); err != nil {
+		log.Println(err)
 		c.Data(http.StatusBadRequest, "", []byte{})
 
 		return
 	}
 
-	threemaSafeBackupID, err := threema.ConvertToBackupID(c.Param("threemaSafeBackupID"))
+	var pathParams PutBackupPathParams
+	if err := c.ShouldBindUri(&pathParams); err != nil {
+		log.Println(err)
+		c.Data(http.StatusBadRequest, "", []byte{})
+
+		return
+	}
+
+	threemaSafeBackupID, err := threema.ConvertToBackupID(pathParams.ThreemaSafeBackupID)
 	if err != nil {
 		log.Println(err)
-
 		c.Data(http.StatusBadRequest, "", []byte{})
 
 		return
@@ -32,7 +48,6 @@ func (a *AppContext) PutBackupHandler(c *gin.Context) {
 
 	if err := threemaSafeEncryptedBackup.Validate(a.Config.Server.Backups.MaxBackupBytes); err != nil {
 		log.Println(err)
-
 		c.Data(http.StatusBadRequest, "", []byte{})
 
 		return
@@ -46,7 +61,6 @@ func (a *AppContext) PutBackupHandler(c *gin.Context) {
 
 	if err := a.StorageBackend.PutBackup(c.Request.Context(), backupInput); err != nil {
 		log.Println(err)
-
 		c.Data(http.StatusInternalServerError, "", []byte{})
 
 		return

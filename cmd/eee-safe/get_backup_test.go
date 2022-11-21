@@ -26,7 +26,7 @@ func assertGetBackupHandlerComponent(t *testing.T, router *gin.Engine, backupID 
 	router.ServeHTTP(res, req)
 
 	if res.Code != assertedCode {
-		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
+		t.Errorf("HTTP request to %q returned %d instead of %d", url, res.Code, assertedCode)
 	}
 
 	if !bytes.Equal(res.Body.Bytes(), assertedEncryptedBackup) {
