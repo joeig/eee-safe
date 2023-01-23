@@ -3,7 +3,7 @@ module github.com/joeig/eee-safe
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go v1.44.175
+	github.com/aws/aws-sdk-go v1.44.184
 	github.com/gin-gonic/gin v1.8.2
 	github.com/spf13/viper v1.14.0
 )
