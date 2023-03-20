@@ -45,13 +45,13 @@ jobs:
           infile: ./out/coverage.out
           outfile: ./out/coverage.lcov
       - name: Coveralls Parallel
-        uses: coverallsapp/github-action@v1.2.4
+        uses: coverallsapp/github-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
           path-to-lcov: ./out/coverage.lcov
       - name: Coveralls Finished
-        uses: coverallsapp/github-action@v1.2.4
+        uses: coverallsapp/github-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
