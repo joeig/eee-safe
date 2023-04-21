@@ -45,8 +45,6 @@ var BuildVersion string
 var BuildGitCommit string
 
 func main() {
-	initialiseSeed()
-
 	configFile := flag.String("config", "config.yml", "Configuration file")
 	debug := flag.Bool("debug", false, "Debug mode")
 	version := flag.Bool("version", false, "Prints the version name")
