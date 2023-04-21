@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gin-gonic/gin"
-	"github.com/joeig/eee-safe/pkg/storage"
 	"github.com/joeig/eee-safe/pkg/storage/dynamodb"
 	"github.com/joeig/eee-safe/pkg/storage/filesystem"
 	"github.com/spf13/viper"
@@ -13,9 +12,9 @@ import (
 
 // Config contains the primary configuration structure of the application
 type Config struct {
-	Server             Server              `mapstructure:"server"`
-	StorageBackendType storage.BackendType `mapstructure:"storageBackendType"`
-	StorageBackends    StorageBackends     `mapstructure:"storageBackends"`
+	Server             Server          `mapstructure:"server"`
+	StorageBackendType string          `mapstructure:"storageBackendType"`
+	StorageBackends    StorageBackends `mapstructure:"storageBackends"`
 }
 
 // Read reads uses a Viper to read a configuration file into a Config instance.
@@ -62,9 +61,9 @@ type StorageBackends struct {
 
 const (
 	// StorageBackendTypeFilesystem sets the storage backend type to "filesystem"
-	StorageBackendTypeFilesystem storage.BackendType = "filesystem"
+	StorageBackendTypeFilesystem = "filesystem"
 	// StorageBackendTypeDynamoDB sets the storage backend type to "filesystem"
-	StorageBackendTypeDynamoDB storage.BackendType = "dynamodb"
+	StorageBackendTypeDynamoDB = "dynamodb"
 )
 
 func mapStorageBackendType(config *Config, backends *StorageBackends) StorageBackend {
