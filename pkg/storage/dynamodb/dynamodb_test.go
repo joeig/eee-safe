@@ -71,6 +71,7 @@ func TestDynamoDB_GetBackup(t *testing.T) {
 	if output == nil {
 		t.Error("no output")
 	}
+
 	if err != nil {
 		t.Error("unexpected error")
 	}
@@ -87,6 +88,7 @@ func TestDynamoDB_GetBackup_error(t *testing.T) {
 	if output == nil {
 		t.Error("no output")
 	}
+
 	if err == nil {
 		t.Error("no error")
 	}

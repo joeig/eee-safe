@@ -21,7 +21,6 @@ linters:
     - gocyclo
     - godox
     - gofmt
-    - goimports
     - golint
     - gosec
     - interfacer
