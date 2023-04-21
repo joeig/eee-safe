@@ -73,12 +73,12 @@ func mapStorageBackendType(config *Config, backends *StorageBackends) StorageBac
 			log.Println("Filesystem storage backend does currently not support backup retention.")
 		}
 
-		return &backends.Filesystem
+		backends.Filesystem.SetFile(&filesystem.OSFile{})
 
+		return &backends.Filesystem
 	case StorageBackendTypeDynamoDB:
 		backends.DynamoDB.InitializeService(session.Must(session.NewSession()))
 		return &backends.DynamoDB
-
 	default:
 		return nil
 	}
