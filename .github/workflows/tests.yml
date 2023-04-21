@@ -45,22 +45,6 @@ jobs:
         run: make test
       - name: Show test coverage
         run: make coverage
-      - name: Convert coverage to lcov
-        uses: jandelgado/gcov2lcov-action@v1.0.9
-        with:
-          infile: ./out/coverage.out
-          outfile: ./out/coverage.lcov
-      - name: Coveralls Parallel
-        uses: coverallsapp/github-action@v2.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          path-to-lcov: ./out/coverage.lcov
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@v2.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel-finished: true
   build:
     name: Build
     runs-on: ubuntu-latest
