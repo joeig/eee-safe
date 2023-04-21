@@ -2,6 +2,7 @@ package dynamodb
 
 import (
 	"context"
+	"github.com/aws/aws-sdk-go/aws/request"
 	"strconv"
 	"strings"
 	"time"
@@ -14,10 +15,20 @@ import (
 	"github.com/joeig/eee-safe/pkg/threema"
 )
 
+// DynamoDBClient defines a DynamoDB client interface.
+type DynamoDBClient interface {
+	// PutItemWithContext puts an item to DynamoDB with context.
+	PutItemWithContext(ctx aws.Context, input *dynamodb.PutItemInput, opts ...request.Option) (*dynamodb.PutItemOutput, error)
+	// GetItemWithContext gets an item from DynamoDB with context.
+	GetItemWithContext(ctx aws.Context, input *dynamodb.GetItemInput, opts ...request.Option) (*dynamodb.GetItemOutput, error)
+	// DeleteItemWithContext deletes an item from DynamoDB with context.
+	DeleteItemWithContext(ctx aws.Context, input *dynamodb.DeleteItemInput, opts ...request.Option) (*dynamodb.DeleteItemOutput, error)
+}
+
 // DynamoDB defines the configuration of the DynamoDB storage backend type.
 type DynamoDB struct {
 	Table string `mapstructure:"table"`
-	svc   *dynamodb.DynamoDB
+	svc   DynamoDBClient
 }
 
 // InitializeService initializes a DynamoDB service for a specific session.
