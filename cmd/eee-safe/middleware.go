@@ -3,26 +3,12 @@ package main
 import (
 	cryptoRand "crypto/rand"
 	"encoding/base64"
-	"encoding/binary"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-// initialiseSeed globally initialises math/rand with a cryptographically strong seed.
-func initialiseSeed() {
-	seed := make([]byte, 8)
-
-	_, err := cryptoRand.Read(seed)
-	if err != nil {
-		panic(err)
-	}
-
-	rand.Seed(int64(binary.LittleEndian.Uint64(seed)))
-}
 
 // RequestIDGenerator defines a function which generates a request ID.
 type RequestIDGenerator func() string
@@ -32,9 +18,7 @@ func NewRandomRequestIDGenerator() RequestIDGenerator {
 	return func() string {
 		randomBytes := make([]byte, 12)
 
-		// Ignore gosec for the following line, because math/rand is supposed to be used after seed initialization.
-		// #nosec
-		if _, err := rand.Read(randomBytes); err != nil {
+		if _, err := cryptoRand.Read(randomBytes); err != nil {
 			panic(err)
 		}
 
