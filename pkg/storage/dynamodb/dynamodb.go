@@ -15,8 +15,8 @@ import (
 	"github.com/joeig/eee-safe/pkg/threema"
 )
 
-// DynamoDBClient defines a DynamoDB client interface.
-type DynamoDBClient interface {
+// Client defines a DynamoDB client interface.
+type Client interface {
 	// PutItemWithContext puts an item to DynamoDB with context.
 	PutItemWithContext(ctx aws.Context, input *dynamodb.PutItemInput, opts ...request.Option) (*dynamodb.PutItemOutput, error)
 	// GetItemWithContext gets an item from DynamoDB with context.
@@ -28,7 +28,7 @@ type DynamoDBClient interface {
 // DynamoDB defines the configuration of the DynamoDB storage backend type.
 type DynamoDB struct {
 	Table string `mapstructure:"table"`
-	svc   DynamoDBClient
+	svc   Client
 }
 
 // InitializeService initializes a DynamoDB service for a specific session.
