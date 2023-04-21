@@ -56,7 +56,7 @@ func (d *DynamoDB) GetBackup(ctx context.Context, backupID threema.BackupID) (*t
 
 	return &threema.BackupOutput{
 		BackupID:        backupID,
-		EncryptedBackup: threema.EncryptedBackup(resultItem.EncryptedBackup),
+		EncryptedBackup: resultItem.EncryptedBackup,
 		CreationTime:    time.Unix(int64(resultItem.CreationTime), 0),
 		ExpirationTime:  time.Unix(int64(resultItem.ExpirationTime), 0),
 	}, nil
