@@ -45,6 +45,10 @@ jobs:
         run: make test
       - name: Show test coverage
         run: make coverage
+      - name: Check test coverage threshold
+        uses: vladopajic/go-test-coverage@v2
+        with:
+          config: ./.github/testcoverage.yml
   build:
     name: Build
     runs-on: ubuntu-latest
