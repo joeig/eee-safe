@@ -8,6 +8,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+func TestNewRandomRequestIDGenerator_length(t *testing.T) {
+	generator := NewRandomRequestIDGenerator()
+
+	if len(generator()) != 16 {
+		t.Errorf("unexpected result length")
+	}
+}
+
 func TestRequestID(t *testing.T) {
 	appCtx := &AppContext{
 		Config:             &Config{},

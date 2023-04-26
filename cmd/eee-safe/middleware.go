@@ -1,7 +1,7 @@
 package main
 
 import (
-	cryptoRand "crypto/rand"
+	"crypto/rand"
 	"encoding/base64"
 	"fmt"
 	"log"
@@ -18,7 +18,7 @@ func NewRandomRequestIDGenerator() RequestIDGenerator {
 	return func() string {
 		randomBytes := make([]byte, 12)
 
-		if _, err := cryptoRand.Read(randomBytes); err != nil {
+		if _, err := rand.Read(randomBytes); err != nil {
 			panic(err)
 		}
 
