@@ -4,12 +4,10 @@ import (
 	"context"
 	"errors"
 	"flag"
-	"log"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/eee-safe/pkg/threema"
 	"github.com/spf13/viper"
+	"log"
 )
 
 // StorageBackend is an interface for basic storage operations
@@ -38,21 +36,9 @@ func (a *AppContext) InitializeStorageBackend() error {
 	return nil
 }
 
-// BuildVersion is set at linking time
-var BuildVersion string
-
-// BuildGitCommit is set at linking time
-var BuildGitCommit string
-
 func main() {
 	configFile := flag.String("config", "config.yml", "Configuration file")
-	debug := flag.Bool("debug", false, "Debug mode")
-	version := flag.Bool("version", false, "Prints the version name")
 	flag.Parse()
-
-	if *version {
-		printVersionAndExit(BuildVersion, BuildGitCommit)
-	}
 
 	appCtx := &AppContext{
 		Config:             &Config{},
@@ -67,11 +53,7 @@ func main() {
 		panic(err)
 	}
 
-	if *debug {
-		gin.SetMode("debug")
-	} else {
-		gin.SetMode("release")
-	}
+	gin.SetMode("release")
 
 	router := getGinEngine(appCtx)
 
@@ -84,10 +66,4 @@ func main() {
 	}
 
 	log.Fatal(router.Run(appCtx.Config.Server.ListenAddress))
-}
-
-func printVersionAndExit(version, commit string) {
-	log.Printf("Build Version: %s\n", version)
-	log.Printf("Build Git Commit: %s\n", commit)
-	os.Exit(0)
 }
