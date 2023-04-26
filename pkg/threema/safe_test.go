@@ -17,6 +17,11 @@ func TestConvertStringToBackupID(t *testing.T) {
 			t.Errorf("Backup ID conversion failed, should be OK: %v", err)
 		}
 	})
+	t.Run("TestNonHexBackupID", func(t *testing.T) {
+		if _, err := ConvertToBackupID("z"); err == nil {
+			t.Error("Backup ID is not a hexadecimal, but validation returns OK")
+		}
+	})
 	t.Run("TestTooShortBackupID", func(t *testing.T) {
 		if _, err := ConvertToBackupID("abcdef"); err == nil {
 			t.Error("Backup ID is too short, but validation returns OK")
