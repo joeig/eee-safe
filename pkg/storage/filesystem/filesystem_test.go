@@ -65,6 +65,17 @@ func (m *mockFile) Stat(_ string) (os.FileInfo, error) {
 	return m.StatOutput, m.StatErr
 }
 
+func TestFilesystem_SetFile(t *testing.T) {
+	file := &mockFile{}
+	filesystem := &Filesystem{}
+
+	filesystem.SetFile(file)
+
+	if filesystem.file != file {
+		t.Error("invalid file")
+	}
+}
+
 func TestFilesystem_PutBackup(t *testing.T) {
 	filesystem := &Filesystem{file: &mockFile{}, Directory: "mock"}
 
