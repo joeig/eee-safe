@@ -17,7 +17,7 @@ jobs:
         with:
           go-version: "1.20"
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Check format
         run: make check-fmt
       - name: golangci-lint
@@ -40,7 +40,7 @@ jobs:
         with:
           go-version: ${{ matrix.goVer }}
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run tests
         run: make test
       - name: Show test coverage
@@ -61,6 +61,6 @@ jobs:
         with:
           go-version: ${{ matrix.goVer }}
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
         run: make build
