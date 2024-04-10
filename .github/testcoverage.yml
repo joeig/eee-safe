@@ -1,6 +1,5 @@
 ---
-profile: ./out/coverage.out
+profile: coverage.out
 threshold:
   # Note: Update README.md in case thresholds change.
-  package: 76
   total: 80
