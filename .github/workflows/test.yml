@@ -19,6 +19,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: "go.mod"
+          check-latest: true
       - run: mkdir -p cmd/eee-safe/threema-backups
       - run: go test -v -coverprofile="coverage.out" ./...
       - run: go tool cover -func="coverage.out"
